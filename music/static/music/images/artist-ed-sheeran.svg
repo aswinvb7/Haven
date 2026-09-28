@@ -1,0 +1,42 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="100%" height="100%">
+  <defs>
+    <radialGradient id="edBg" cx="50%" cy="40%" r="60%">
+      <stop offset="0%" stop-color="#c2410c"/>
+      <stop offset="60%" stop-color="#7c2d12"/>
+      <stop offset="100%" stop-color="#270a04"/>
+    </radialGradient>
+    <clipPath id="edClip">
+      <circle cx="100" cy="100" r="100"/>
+    </clipPath>
+  </defs>
+  <g clip-path="url(#edClip)">
+    <rect width="200" height="200" fill="url(#edBg)"/>
+    <!-- Stage Warm Lights -->
+    <circle cx="50" cy="40" r="30" fill="#fb923c" opacity="0.35"/>
+    <circle cx="150" cy="50" r="25" fill="#f97316" opacity="0.3"/>
+
+    <!-- Black T-shirt / casual hoodie -->
+    <path d="M40,210 C45,155 75,145 100,145 C125,145 155,155 160,210 Z" fill="#18181b"/>
+    <!-- Guitar strap diagonal -->
+    <path d="M60,210 L135,145" stroke="#71717a" stroke-width="9" stroke-linecap="round"/>
+
+    <!-- Neck -->
+    <rect x="90" y="115" width="20" height="34" fill="#fed7aa"/>
+    <!-- Face -->
+    <ellipse cx="100" cy="98" rx="27" ry="30" fill="#ffedd5"/>
+    <!-- Blue Eyes -->
+    <circle cx="89" cy="94" r="2.5" fill="#0284c7"/>
+    <circle cx="111" cy="94" r="2.5" fill="#0284c7"/>
+    <!-- Reddish stubble / smile -->
+    <path d="M92,108 Q100,113 108,108" stroke="#b45309" stroke-width="2" fill="none"/>
+    <path d="M80,105 C80,122 120,122 120,105" stroke="#ea580c" stroke-width="2" stroke-dasharray="2 3" fill="none" opacity="0.6"/>
+
+    <!-- Signature Tousled Red/Ginger Hair -->
+    <path d="M64,90 C62,50 138,50 136,90 C125,60 115,45 100,45 C85,45 75,60 64,90 Z" fill="#ea580c"/>
+    <!-- Messy textured locks -->
+    <path d="M68,75 Q60,50 78,55 Q72,40 92,45 Q100,35 110,45 Q125,38 128,55 Q140,55 132,75 Q120,55 100,55 Q80,55 68,75 Z" fill="#f97316"/>
+    <path d="M75,65 Q85,75 78,85" stroke="#f97316" stroke-width="4" stroke-linecap="round" fill="none"/>
+    <path d="M125,65 Q115,75 122,85" stroke="#f97316" stroke-width="4" stroke-linecap="round" fill="none"/>
+    <path d="M92,55 Q98,70 94,80" stroke="#fb923c" stroke-width="3" stroke-linecap="round" fill="none"/>
+  </g>
+</svg>

@@ -1,0 +1,59 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" width="100%" height="100%">
+  <defs>
+    <linearGradient id="twilightSky" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#0c0721"/>
+      <stop offset="45%" stop-color="#2d124d"/>
+      <stop offset="80%" stop-color="#6b2170"/>
+      <stop offset="100%" stop-color="#b83280"/>
+    </linearGradient>
+    <linearGradient id="mist1" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#b83280" stop-opacity="0.4"/>
+      <stop offset="100%" stop-color="#2d124d" stop-opacity="0"/>
+    </linearGradient>
+    <linearGradient id="moonGlow" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#fff"/>
+      <stop offset="100%" stop-color="#fbcfe8"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Sky -->
+  <rect width="400" height="400" fill="url(#twilightSky)"/>
+
+  <!-- Stars & Constellations -->
+  <g fill="#fff" opacity="0.75">
+    <circle cx="80" cy="40" r="1.2"/>
+    <circle cx="140" cy="65" r="1.5"/>
+    <circle cx="220" cy="30" r="1"/>
+    <circle cx="310" cy="55" r="1.8"/>
+    <circle cx="360" cy="85" r="1.2"/>
+    <circle cx="50" cy="110" r="1"/>
+    <circle cx="180" cy="95" r="1.4"/>
+    <circle cx="270" cy="110" r="1.2"/>
+  </g>
+
+  <!-- Crescent Moon -->
+  <path d="M290,45 A24,24 0 1,0 325,80 A20,20 0 1,1 290,45 Z" fill="url(#moonGlow)" opacity="0.9"/>
+
+  <!-- Distant Mountains (Layer 1) -->
+  <polygon points="0,270 70,190 140,240 210,170 300,250 370,185 400,210 400,400 0,400" fill="#43144a" opacity="0.6"/>
+
+  <!-- Mist Layer 1 -->
+  <rect y="210" width="400" height="40" fill="url(#mist1)"/>
+
+  <!-- Midground Mountains (Layer 2) -->
+  <polygon points="0,300 90,220 160,270 250,195 320,245 400,215 400,400 0,400" fill="#290d38" opacity="0.85"/>
+
+  <!-- Pine Trees Ridge (Layer 3) -->
+  <path d="M0,320 
+           L15,310 L25,320 L40,305 L50,318 L65,300 L75,315 L95,295 L110,312 
+           L130,285 L145,308 L170,275 L190,305 L215,265 L235,298 L260,270 
+           L285,302 L310,275 L330,295 L355,270 L375,292 L400,265 L400,400 L0,400 Z" fill="#180724"/>
+
+  <!-- Foreground Dramatic Peaks -->
+  <polygon points="0,340 70,260 140,320 200,280 270,350 400,310 400,400 0,400" fill="#0d0314"/>
+
+  <!-- Calm Foreground Lake Mirror -->
+  <rect y="360" width="400" height="40" fill="#08020d"/>
+  <ellipse cx="200" cy="375" rx="180" ry="12" fill="#6b2170" opacity="0.25"/>
+  <ellipse cx="200" cy="385" rx="140" ry="6" fill="#b83280" opacity="0.2"/>
+</svg>

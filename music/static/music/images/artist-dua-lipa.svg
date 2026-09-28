@@ -1,0 +1,45 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="100%" height="100%">
+  <defs>
+    <radialGradient id="duaBg" cx="50%" cy="40%" r="60%">
+      <stop offset="0%" stop-color="#6b21a8"/>
+      <stop offset="60%" stop-color="#3b0764"/>
+      <stop offset="100%" stop-color="#140224"/>
+    </radialGradient>
+    <clipPath id="duaClip">
+      <circle cx="100" cy="100" r="100"/>
+    </clipPath>
+  </defs>
+  <g clip-path="url(#duaClip)">
+    <rect width="200" height="200" fill="url(#duaBg)"/>
+    <!-- Magenta glow balls -->
+    <circle cx="40" cy="50" r="30" fill="#c084fc" opacity="0.3"/>
+    <circle cx="160" cy="50" r="30" fill="#e879f9" opacity="0.25"/>
+
+    <!-- Shiny stage outfit -->
+    <path d="M45,210 C50,165 75,150 100,150 C125,150 150,165 155,210 Z" fill="#2e1065"/>
+    <path d="M75,170 Q100,185 125,170" stroke="#a855f7" stroke-width="2.5" fill="none"/>
+
+    <!-- Neck -->
+    <rect x="91" y="115" width="18" height="35" fill="#fbcfe8"/>
+    <!-- Face -->
+    <ellipse cx="100" cy="95" rx="26" ry="31" fill="#fde68a" opacity="0.95"/>
+    <path d="M82,90 Q90,87 96,91" stroke="#3b0764" stroke-width="2.2" fill="none"/>
+    <path d="M104,90 Q110,87 118,91" stroke="#3b0764" stroke-width="2.2" fill="none"/>
+    <!-- Sharp eyebrows -->
+    <path d="M80,84 Q90,80 96,84" stroke="#18181b" stroke-width="2" fill="none"/>
+    <path d="M104,84 Q110,80 120,84" stroke="#18181b" stroke-width="2" fill="none"/>
+    <!-- Lips -->
+    <ellipse cx="100" cy="112" rx="7" ry="3.5" fill="#db2777"/>
+
+    <!-- Sleek Center-Parted Raven Hair -->
+    <!-- Behind shoulders -->
+    <path d="M60,90 C50,125 55,175 68,200 C58,160 55,115 62,85 Z" fill="#18181b"/>
+    <path d="M140,90 C150,125 145,175 132,200 C142,160 145,115 138,85 Z" fill="#18181b"/>
+    <!-- Sleek Top and Curtain Hair framing face -->
+    <path d="M62,85 C62,45 138,45 138,85 C132,60 120,48 100,48 C80,48 68,60 62,85 Z" fill="#18181b"/>
+    <path d="M64,80 C70,110 75,135 77,145 C73,125 72,100 64,80 Z" fill="#27272a"/>
+    <path d="M136,80 C130,110 125,135 123,145 C127,125 128,100 136,80 Z" fill="#27272a"/>
+    <!-- Purple Rim Light on Hair -->
+    <path d="M65,75 C63,55 75,50 100,50" stroke="#c084fc" stroke-width="2" fill="none" opacity="0.6"/>
+  </g>
+</svg>

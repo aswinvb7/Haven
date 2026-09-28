@@ -1,0 +1,56 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="100%" height="100%">
+  <defs>
+    <radialGradient id="weekndBg" cx="50%" cy="40%" r="60%">
+      <stop offset="0%" stop-color="#b91c1c"/>
+      <stop offset="60%" stop-color="#7f1d1d"/>
+      <stop offset="100%" stop-color="#450a0a"/>
+    </radialGradient>
+    <clipPath id="xoClip">
+      <circle cx="100" cy="100" r="100"/>
+    </clipPath>
+  </defs>
+  <g clip-path="url(#xoClip)">
+    <rect width="200" height="200" fill="url(#weekndBg)"/>
+    <!-- Neon Red/Orange Flares -->
+    <circle cx="50" cy="50" r="35" fill="#f87171" opacity="0.35"/>
+    <circle cx="150" cy="40" r="25" fill="#ef4444" opacity="0.25"/>
+
+    <!-- Red Suit Jacket & Black Shirt -->
+    <path d="M40,210 C45,155 75,145 100,145 C125,145 155,155 160,210 Z" fill="#dc2626"/>
+    <!-- Black Shirt V -->
+    <polygon points="100,145 85,190 115,190" fill="#09090b"/>
+    <!-- Black Tie -->
+    <polygon points="100,165 96,210 104,210" fill="#18181b"/>
+    <!-- Jacket lapels -->
+    <path d="M72,150 L95,195 L80,210" stroke="#991b1b" stroke-width="2.5" fill="none"/>
+    <path d="M128,150 L105,195 L120,210" stroke="#991b1b" stroke-width="2.5" fill="none"/>
+
+    <!-- Neck -->
+    <rect x="90" y="115" width="20" height="32" fill="#8d5b4c"/>
+    <!-- Face -->
+    <ellipse cx="100" cy="98" rx="28" ry="32" fill="#a06857"/>
+
+    <!-- Signature Sunglasses -->
+    <g transform="translate(0, 0)">
+      <rect x="74" y="85" width="22" height="15" rx="3" fill="#09090b" stroke="#18181b" stroke-width="1.5"/>
+      <rect x="104" y="85" width="22" height="15" rx="3" fill="#09090b" stroke="#18181b" stroke-width="1.5"/>
+      <line x1="96" y1="89" x2="104" y2="89" stroke="#18181b" stroke-width="2"/>
+      <!-- Sunglasses Lens Reflection -->
+      <line x1="77" y1="87" x2="90" y2="97" stroke="#ef4444" stroke-width="2" opacity="0.75"/>
+      <line x1="107" y1="87" x2="120" y2="97" stroke="#ef4444" stroke-width="2" opacity="0.75"/>
+    </g>
+
+    <!-- Moustache and Goatee -->
+    <path d="M92,110 Q100,113 108,110" stroke="#18181b" stroke-width="3" stroke-linecap="round"/>
+    <ellipse cx="100" cy="120" rx="5" ry="4" fill="#18181b"/>
+
+    <!-- Signature Afro Hairstyle -->
+    <path d="M60,95 C50,75 55,45 80,38 C90,35 110,35 120,38 C145,45 150,75 140,95 C145,80 145,60 135,50 C125,40 100,40 75,50 C65,60 60,75 60,95 Z" fill="#171717"/>
+    <!-- Texture bumps on hair -->
+    <circle cx="68" cy="65" r="14" fill="#171717"/>
+    <circle cx="82" cy="48" r="16" fill="#1c1917"/>
+    <circle cx="100" cy="42" r="17" fill="#171717"/>
+    <circle cx="118" cy="48" r="16" fill="#1c1917"/>
+    <circle cx="132" cy="65" r="14" fill="#171717"/>
+  </g>
+</svg>

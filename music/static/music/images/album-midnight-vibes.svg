@@ -1,0 +1,97 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" width="100%" height="100%">
+  <defs>
+    <linearGradient id="sky" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#0a0518"/>
+      <stop offset="60%" stop-color="#2c0b4d"/>
+      <stop offset="100%" stop-color="#7928ca"/>
+    </linearGradient>
+    <linearGradient id="sunGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#ff007a"/>
+      <stop offset="50%" stop-color="#f85125"/>
+      <stop offset="100%" stop-color="#e11d48"/>
+    </linearGradient>
+    <linearGradient id="gridGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#7928ca" stop-opacity="0.8"/>
+      <stop offset="100%" stop-color="#090a14"/>
+    </linearGradient>
+    <filter id="neon">
+      <feGaussianBlur stdDeviation="3" result="blur"/>
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+
+  <!-- Sky -->
+  <rect width="400" height="400" fill="url(#sky)"/>
+
+  <!-- Distant Stars -->
+  <circle cx="50" cy="60" r="1.5" fill="#fff" opacity="0.8"/>
+  <circle cx="120" cy="30" r="1" fill="#fff" opacity="0.6"/>
+  <circle cx="280" cy="70" r="1.5" fill="#fff" opacity="0.8"/>
+  <circle cx="340" cy="40" r="1" fill="#fff" opacity="0.5"/>
+  <circle cx="200" cy="50" r="1.2" fill="#fff" opacity="0.7"/>
+
+  <!-- Retro Glowing Sun -->
+  <circle cx="200" cy="220" r="85" fill="url(#sunGrad)" filter="url(#neon)"/>
+  <!-- Sun horizontal grid cuts -->
+  <rect x="110" y="215" width="180" height="4" fill="#1b0833"/>
+  <rect x="115" y="226" width="170" height="6" fill="#1b0833"/>
+  <rect x="125" y="240" width="150" height="8" fill="#1b0833"/>
+  <rect x="140" y="258" width="120" height="10" fill="#1b0833"/>
+
+  <!-- City Skyline Silhouettes -->
+  <!-- Layer 1 (Distant) -->
+  <path d="M0,280 L20,280 L20,250 L40,250 L40,280 L70,280 L70,230 L95,230 L95,280 L140,280 L140,240 L160,240 L160,280 L230,280 L230,225 L260,225 L260,280 L300,280 L300,245 L330,245 L330,280 L370,280 L370,235 L400,235 L400,280 Z" fill="#1f1138" opacity="0.8"/>
+  
+  <!-- Layer 2 (Foreground Skyscrapers) -->
+  <rect x="30" y="240" width="35" height="160" fill="#0c0717"/>
+  <rect x="80" y="210" width="45" height="190" fill="#090512"/>
+  <rect x="145" y="250" width="30" height="150" fill="#120a21"/>
+  <rect x="190" y="190" width="50" height="210" fill="#07030d"/>
+  <polygon points="215,145 190,190 240,190" fill="#07030d"/>
+  <line x1="215" y1="130" x2="215" y2="145" stroke="#ff007a" stroke-width="2" filter="url(#neon)"/>
+
+  <rect x="255" y="230" width="40" height="170" fill="#0f071c"/>
+  <rect x="310" y="215" width="48" height="185" fill="#08040f"/>
+  <rect x="370" y="260" width="30" height="140" fill="#140b24"/>
+
+  <!-- Glowing Building Windows -->
+  <g fill="#00f0ff" opacity="0.75">
+    <rect x="86" y="225" width="4" height="6"/>
+    <rect x="94" y="225" width="4" height="6"/>
+    <rect x="102" y="225" width="4" height="6"/>
+    <rect x="110" y="225" width="4" height="6"/>
+    <rect x="86" y="245" width="4" height="6"/>
+    <rect x="102" y="245" width="4" height="6"/>
+    <rect x="198" y="210" width="5" height="7"/>
+    <rect x="210" y="210" width="5" height="7"/>
+    <rect x="222" y="210" width="5" height="7"/>
+    <rect x="198" y="230" width="5" height="7"/>
+    <rect x="222" y="230" width="5" height="7"/>
+    <rect x="318" y="235" width="4" height="6"/>
+    <rect x="334" y="235" width="4" height="6"/>
+  </g>
+  <g fill="#ff007a" opacity="0.7">
+    <rect x="94" y="265" width="4" height="6"/>
+    <rect x="110" y="265" width="4" height="6"/>
+    <rect x="210" y="250" width="5" height="7"/>
+    <rect x="265" y="255" width="5" height="6"/>
+    <rect x="275" y="255" width="5" height="6"/>
+  </g>
+
+  <!-- Perspective Grid Ground -->
+  <rect x="0" y="320" width="400" height="80" fill="url(#gridGrad)"/>
+  <line x1="0" y1="335" x2="400" y2="335" stroke="#bd34fe" stroke-width="1.2" opacity="0.4"/>
+  <line x1="0" y1="355" x2="400" y2="355" stroke="#bd34fe" stroke-width="1.5" opacity="0.6"/>
+  <line x1="0" y1="380" x2="400" y2="380" stroke="#00f0ff" stroke-width="2" opacity="0.8"/>
+  <!-- Perspective rays -->
+  <line x1="200" y1="320" x2="20" y2="400" stroke="#bd34fe" stroke-width="1.5" opacity="0.6"/>
+  <line x1="200" y1="320" x2="80" y2="400" stroke="#bd34fe" stroke-width="1.5" opacity="0.6"/>
+  <line x1="200" y1="320" x2="140" y2="400" stroke="#bd34fe" stroke-width="1.5" opacity="0.6"/>
+  <line x1="200" y1="320" x2="200" y2="400" stroke="#00f0ff" stroke-width="2" opacity="0.7"/>
+  <line x1="200" y1="320" x2="260" y2="400" stroke="#bd34fe" stroke-width="1.5" opacity="0.6"/>
+  <line x1="200" y1="320" x2="320" y2="400" stroke="#bd34fe" stroke-width="1.5" opacity="0.6"/>
+  <line x1="200" y1="320" x2="380" y2="400" stroke="#bd34fe" stroke-width="1.5" opacity="0.6"/>
+</svg>

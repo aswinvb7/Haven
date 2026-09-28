@@ -1,0 +1,260 @@
+{% extends 'music/base.html' %}
+{% load static %}
+
+{% block title %}Haven - Your Music. Your Mood.{% endblock %}
+
+{% block content %}
+<!-- ========================================================================
+     HERO SECTION
+     ======================================================================== -->
+<section class="hero-section" id="hero">
+    <div class="container">
+        <div class="hero-grid">
+            <!-- Left Hero Content -->
+            <div class="hero-content">
+                <span class="hero-eyebrow">Music Without Limits</span>
+                <h1 class="hero-title">
+                    Press play <span class="gradient-text">and<br>let the world fade</span> away
+                </h1>
+                <p class="hero-description">
+                    Discover new songs, explore amazing artists, and create your own playlists. Music brings people together.
+                </p>
+
+                <div class="hero-cta-group">
+                    <button class="btn btn-primary" id="exploreMusicBtn" aria-label="Explore Music">
+                        Explore Music
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                            <line x1="5" y1="12" x2="19" y2="12"></line>
+                            <polyline points="12 5 19 12 12 19"></polyline>
+                        </svg>
+                    </button>
+                    <a href="#features" class="btn btn-secondary">Learn More</a>
+                </div>
+
+                <!-- Statistics Below Hero -->
+                <div class="hero-stats">
+                    <div class="stat-item">
+                        <span class="stat-value">5+</span>
+                        <span class="stat-label">Songs</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-value">10+</span>
+                        <span class="stat-label">Artists</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-value">&infin;</span>
+                        <span class="stat-label">Possibilities</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Hero Artwork (Headphone with glow & script badge) -->
+            <div class="hero-visual">
+                <img src="{% static 'music/images/headphones.png' %}" alt="Haven Wireless Headphones Glowing in Neon Purple and Blue" class="visual-artwork" width="560" height="520">
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ========================================================================
+     FEATURE / QUICK ACCESS SECTION
+     ======================================================================== -->
+<section class="features-section" id="features">
+    <div class="container">
+        <div class="features-grid">
+            <!-- 1. Discover -->
+            <div class="feature-card" data-locked="true" data-title="Discover Music">
+                <div class="feature-icon-wrapper" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M9 18V5l12-2v13"></path>
+                        <circle cx="6" cy="18" r="3"></circle>
+                        <circle cx="18" cy="16" r="3"></circle>
+                    </svg>
+                </div>
+                <div class="feature-content">
+                    <h3 class="feature-title">Discover</h3>
+                    <p class="feature-subtitle">Find new music</p>
+                </div>
+            </div>
+
+            <!-- 2. Follow Artists -->
+            <div class="feature-card" data-locked="true" data-title="Follow Artists">
+                <div class="feature-icon-wrapper" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                        <circle cx="9" cy="7" r="4"></circle>
+                        <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                        <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                    </svg>
+                </div>
+                <div class="feature-content">
+                    <h3 class="feature-title">Follow Artists</h3>
+                    <p class="feature-subtitle">Stay updated</p>
+                </div>
+            </div>
+
+            <!-- 3. Create Playlists -->
+            <div class="feature-card" data-locked="true" data-title="Create Playlists">
+                <div class="feature-icon-wrapper" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="8" y1="6" x2="21" y2="6"></line>
+                        <line x1="8" y1="12" x2="21" y2="12"></line>
+                        <line x1="8" y1="18" x2="21" y2="18"></line>
+                        <line x1="3" y1="6" x2="3.01" y2="6"></line>
+                        <line x1="3" y1="12" x2="3.01" y2="12"></line>
+                        <line x1="3" y1="18" x2="3.01" y2="18"></line>
+                    </svg>
+                </div>
+                <div class="feature-content">
+                    <h3 class="feature-title">Create Playlists</h3>
+                    <p class="feature-subtitle">Build your collection</p>
+                </div>
+            </div>
+
+            <!-- 4. Your Library -->
+            <div class="feature-card" data-locked="true" data-title="Your Library">
+                <div class="feature-icon-wrapper" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+                    </svg>
+                </div>
+                <div class="feature-content">
+                    <h3 class="feature-title">Your Library</h3>
+                    <p class="feature-subtitle">Save your favorites</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ========================================================================
+     POPULAR ALBUMS SECTION
+     ======================================================================== -->
+<section class="albums-section" id="popular-albums">
+    <div class="container">
+        <!-- Section Header -->
+        <div class="section-header">
+            <div class="section-title-group">
+                <h2 class="section-title">Popular Albums</h2>
+                <p class="section-subtitle">Explore some of the most popular albums.</p>
+            </div>
+            <a href="#popular-albums" class="section-view-all">
+                View All
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="5" y1="12" x2="19" y2="12"></line>
+                    <polyline points="12 5 19 12 12 19"></polyline>
+                </svg>
+            </a>
+        </div>
+
+        <!-- Albums Grid (Horizontal Responsive Layout) -->
+        <div class="albums-grid">
+            {% for album in albums %}
+            <div class="album-card" data-locked="true" data-title="{{ album.title }}" role="button" tabindex="0" aria-label="{{ album.title }} by {{ album.artist.name }} - Login to listen">
+                <!-- Album Cover with Locked Overlay -->
+                <div class="album-cover-container">
+                    {% if album.cover_image %}
+                        {% if album.cover_image.url %}
+                            <img src="{{ album.cover_image.url }}" alt="{{ album.title }} Album Art" class="album-cover-img" loading="lazy">
+                        {% else %}
+                            <img src="{% static album.cover_image %}" alt="{{ album.title }} Album Art" class="album-cover-img" loading="lazy">
+                        {% endif %}
+                    {% else %}
+                        <img src="{% static 'music/images/album-midnight-vibes.svg' %}" alt="{{ album.title }} Album Art" class="album-cover-img" loading="lazy">
+                    {% endif %}
+
+                    <!-- Locked Overlay communicating playback requires authentication -->
+                    <div class="album-locked-overlay">
+                        <div class="lock-badge-icon" aria-hidden="true">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                                <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                                <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+                            </svg>
+                        </div>
+                        <span class="lock-text">Login to listen</span>
+                    </div>
+                </div>
+
+                <!-- Album Metadata -->
+                <div class="album-info">
+                    <h3 class="album-title">{{ album.title }}</h3>
+                    <p class="album-artist">{{ album.artist.name }}</p>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<!-- ========================================================================
+     FEATURED ARTISTS SECTION
+     ======================================================================== -->
+<section class="artists-section" id="featured-artists">
+    <div class="container">
+        <!-- Section Header -->
+        <div class="section-header">
+            <div class="section-title-group">
+                <h2 class="section-title">Featured Artists</h2>
+                <p class="section-subtitle">Discover the artists behind the music.</p>
+            </div>
+            <a href="#featured-artists" class="section-view-all">
+                View All
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="5" y1="12" x2="19" y2="12"></line>
+                    <polyline points="12 5 19 12 12 19"></polyline>
+                </svg>
+            </a>
+        </div>
+
+        <!-- Artists Grid (Circular Profile Layout) -->
+        <div class="artists-grid">
+            {% for artist in artists %}
+            <div class="artist-card" data-locked="true" data-title="{{ artist.name }}" role="button" tabindex="0" aria-label="{{ artist.name }}">
+                <div class="artist-avatar-wrapper">
+                    {% if artist.image %}
+                        {% if artist.image.url %}
+                            <img src="{{ artist.image.url }}" alt="{{ artist.name }}" class="artist-avatar-img" loading="lazy">
+                        {% else %}
+                            <img src="{% static artist.image %}" alt="{{ artist.name }}" class="artist-avatar-img" loading="lazy">
+                        {% endif %}
+                    {% else %}
+                        <img src="{% static 'music/images/artist-arijit-singh.svg' %}" alt="{{ artist.name }}" class="artist-avatar-img" loading="lazy">
+                    {% endif %}
+                </div>
+                <h3 class="artist-name">{{ artist.name }}</h3>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<!-- ========================================================================
+     CALL-TO-ACTION (CTA) SECTION
+     ======================================================================== -->
+<section class="cta-section" id="community">
+    <div class="container">
+        <div class="cta-banner">
+            <!-- Background concert crowd silhouette and lighting -->
+            <img src="{% static 'music/images/cta-crowd-bg.svg' %}" alt="" class="cta-bg-image" aria-hidden="true">
+
+            <div class="cta-content">
+                <span class="cta-eyebrow">Join The Community</span>
+                <h2 class="cta-title">Music Sounds Better Together</h2>
+                <p class="cta-description">
+                    Sign up now to listen, create playlists, and enjoy a personalized music experience.
+                </p>
+            </div>
+
+            <div class="cta-action">
+                <a href="/signup/" class="btn btn-primary" data-auth-action="signup">
+                    Create an Account
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="5" y1="12" x2="19" y2="12"></line>
+                        <polyline points="12 5 19 12 12 19"></polyline>
+                    </svg>
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

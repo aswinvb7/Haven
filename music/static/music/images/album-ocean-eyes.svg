@@ -1,0 +1,67 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" width="100%" height="100%">
+  <defs>
+    <linearGradient id="deepOcean" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#051923"/>
+      <stop offset="50%" stop-color="#003554"/>
+      <stop offset="100%" stop-color="#006494"/>
+    </linearGradient>
+    <linearGradient id="waveCurl" x1="0%" y1="100%" x2="0%" y2="0%">
+      <stop offset="0%" stop-color="#001d3d"/>
+      <stop offset="40%" stop-color="#0077b6"/>
+      <stop offset="85%" stop-color="#00b4d8"/>
+      <stop offset="100%" stop-color="#90e0ef"/>
+    </linearGradient>
+    <linearGradient id="foam" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#ffffff"/>
+      <stop offset="100%" stop-color="#caf0f8"/>
+    </linearGradient>
+    <filter id="sprayGlow">
+      <feGaussianBlur stdDeviation="3" result="blur"/>
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+
+  <!-- Dark Sky / Deep Ocean background -->
+  <rect width="400" height="400" fill="url(#deepOcean)"/>
+
+  <!-- Distant Moody Swells -->
+  <path d="M0,180 Q100,160 200,185 Q300,165 400,180 L400,400 L0,400 Z" fill="#002845" opacity="0.8"/>
+  <path d="M0,220 Q80,200 180,225 Q320,195 400,215 L400,400 L0,400 Z" fill="#003554" opacity="0.9"/>
+
+  <!-- Massive Surging Cresting Wave Body -->
+  <path d="M0,290 C60,280 120,240 180,180 C240,120 310,90 350,130 C370,150 360,180 320,195 C270,210 230,230 180,290 C120,350 40,380 0,400 Z" fill="url(#waveCurl)"/>
+
+  <!-- Wave Interior Barrel Shadow -->
+  <path d="M140,250 C190,190 260,150 320,170 C280,190 230,225 180,285 C140,330 80,360 40,380 Z" fill="#021726" opacity="0.75"/>
+
+  <!-- Wave Lip / Crest Froth and Spray -->
+  <path d="M280,110 C320,80 365,100 375,135 C380,155 365,175 335,185 C310,170 300,140 280,110 Z" fill="url(#foam)" filter="url(#sprayGlow)"/>
+
+  <!-- Spume / Sea Foam Streaks -->
+  <g fill="none" stroke="#caf0f8" stroke-width="2.5" stroke-linecap="round" opacity="0.85">
+    <path d="M120,270 C160,230 210,195 270,175"/>
+    <path d="M80,310 C130,270 190,230 250,215"/>
+    <path d="M50,350 C100,320 160,280 220,265"/>
+    <path d="M20,385 C70,360 130,330 180,320"/>
+  </g>
+
+  <!-- Water Spray Droplets Flying Off Crest -->
+  <g fill="#e0f7fa" opacity="0.8" filter="url(#sprayGlow)">
+    <circle cx="370" cy="115" r="3.5"/>
+    <circle cx="385" cy="130" r="2.5"/>
+    <circle cx="395" cy="150" r="3"/>
+    <circle cx="360" cy="95" r="2"/>
+    <circle cx="340" cy="85" r="2.5"/>
+    <circle cx="320" cy="80" r="1.8"/>
+    <circle cx="375" cy="80" r="1.5"/>
+    <circle cx="310" cy="95" r="2"/>
+    <circle cx="290" cy="105" r="3"/>
+  </g>
+
+  <!-- Lower Foamy Water Surface -->
+  <ellipse cx="140" cy="380" rx="130" ry="18" fill="#caf0f8" opacity="0.3"/>
+  <ellipse cx="280" cy="390" rx="100" ry="12" fill="#90e0ef" opacity="0.25"/>
+</svg>

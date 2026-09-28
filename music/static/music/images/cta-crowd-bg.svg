@@ -1,0 +1,90 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 280" width="100%" height="100%" preserveAspectRatio="xMidYMid slice">
+  <defs>
+    <linearGradient id="bannerBg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#1e1035"/>
+      <stop offset="35%" stop-color="#2d1254"/>
+      <stop offset="70%" stop-color="#13082b"/>
+      <stop offset="100%" stop-color="#0a0518"/>
+    </linearGradient>
+    <linearGradient id="beam1" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#38bdf8" stop-opacity="0.35"/>
+      <stop offset="100%" stop-color="#1e1035" stop-opacity="0"/>
+    </linearGradient>
+    <linearGradient id="beam2" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#c084fc" stop-opacity="0.4"/>
+      <stop offset="100%" stop-color="#1e1035" stop-opacity="0"/>
+    </linearGradient>
+    <radialGradient id="stageGlow" cx="50%" cy="40%" r="60%">
+      <stop offset="0%" stop-color="#8b5cf6" stop-opacity="0.5"/>
+      <stop offset="50%" stop-color="#4c1d95" stop-opacity="0.25"/>
+      <stop offset="100%" stop-color="#000" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+
+  <!-- Banner Dark Background -->
+  <rect width="1200" height="280" fill="url(#bannerBg)"/>
+
+  <!-- Stage Lights Radial Core -->
+  <circle cx="600" cy="100" r="400" fill="url(#stageGlow)"/>
+
+  <!-- Dramatic Light Beams shining down across crowd -->
+  <polygon points="350,0 200,280 400,280" fill="url(#beam1)"/>
+  <polygon points="600,0 450,280 750,280" fill="url(#beam2)"/>
+  <polygon points="850,0 700,280 950,280" fill="url(#beam1)"/>
+
+  <!-- Floating Sparkles / Stage Dust -->
+  <g fill="#e9d5ff" opacity="0.6">
+    <circle cx="300" cy="60" r="1.5"/>
+    <circle cx="450" cy="90" r="2.5"/>
+    <circle cx="580" cy="40" r="2"/>
+    <circle cx="700" cy="80" r="3"/>
+    <circle cx="850" cy="50" r="2"/>
+    <circle cx="950" cy="110" r="1.5"/>
+  </g>
+
+  <!-- Cheering Concert Crowd Silhouettes (Multiple detailed hands and heads) -->
+  <!-- Back row crowd -->
+  <path d="M0,230 Q80,210 160,230 Q240,205 320,225 Q400,210 480,228 Q560,200 640,225 Q720,205 800,226 Q880,210 960,225 Q1040,205 1120,230 Q1160,220 1200,230 L1200,280 L0,280 Z" fill="#0d071a" opacity="0.8"/>
+
+  <!-- Front row cheering silhouettes with raised arms & hands -->
+  <g fill="#07030d">
+    <!-- Left crowd hands -->
+    <path d="M60,280 L65,190 Q72,175 75,190 L80,280 Z"/>
+    <ellipse cx="70" cy="178" rx="6" ry="7"/>
+    <!-- Peace/Rock gesture -->
+    <path d="M140,280 L145,170 Q148,155 152,170 L156,280 Z"/>
+    <path d="M142,165 L138,145 L144,148 L147,165 Z"/>
+    <path d="M152,165 L156,145 L150,148 L147,165 Z"/>
+
+    <!-- Center-left raised hands -->
+    <path d="M320,280 L330,175 Q335,160 340,175 L350,280 Z"/>
+    <!-- Open palm -->
+    <ellipse cx="335" cy="165" rx="9" ry="8"/>
+    <line x1="329" y1="160" x2="327" y2="150" stroke="#07030d" stroke-width="2.5"/>
+    <line x1="333" y1="158" x2="333" y2="148" stroke="#07030d" stroke-width="2.5"/>
+    <line x1="338" y1="158" x2="339" y2="149" stroke="#07030d" stroke-width="2.5"/>
+    <line x1="342" y1="161" x2="345" y2="152" stroke="#07030d" stroke-width="2.5"/>
+
+    <!-- Center hands cheering -->
+    <path d="M520,280 L526,160 Q530,145 536,160 L545,280 Z"/>
+    <ellipse cx="531" cy="150" rx="8" ry="10"/>
+
+    <path d="M620,280 L625,180 Q630,165 635,180 L642,280 Z"/>
+    <ellipse cx="630" cy="172" rx="7" ry="8"/>
+
+    <!-- Right crowd hands -->
+    <path d="M780,280 L790,165 Q795,150 802,165 L812,280 Z"/>
+    <ellipse cx="796" cy="155" rx="8" ry="9"/>
+    <line x1="792" y1="150" x2="790" y2="140" stroke="#07030d" stroke-width="2.5"/>
+    <line x1="796" y1="148" x2="796" y2="138" stroke="#07030d" stroke-width="2.5"/>
+    <line x1="801" y1="150" x2="803" y2="141" stroke="#07030d" stroke-width="2.5"/>
+
+    <path d="M940,280 L945,185 Q950,170 955,185 L962,280 Z"/>
+    <ellipse cx="950" cy="175" rx="8" ry="8"/>
+
+    <path d="M1060,280 L1070,180 Q1075,165 1080,180 L1090,280 Z"/>
+
+    <!-- Base wavy silhouettes of heads / shoulders across full width -->
+    <path d="M0,250 C30,240 50,225 80,240 C110,230 130,220 160,240 C190,230 220,220 250,245 C280,235 310,220 340,245 C370,230 400,225 430,245 C460,235 490,215 520,240 C550,230 580,220 610,245 C640,235 670,220 700,240 C730,230 760,225 790,245 C820,235 850,220 880,245 C910,230 940,220 970,240 C1000,230 1030,225 1060,245 C1090,235 1120,220 1150,245 C1180,230 1200,235 1200,250 L1200,280 L0,280 Z"/>
+  </g>
+</svg>

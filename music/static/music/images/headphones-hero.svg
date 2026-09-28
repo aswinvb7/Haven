@@ -1,0 +1,151 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 700 650" width="100%" height="100%" fill="none">
+  <defs>
+    <!-- Background Glows -->
+    <radialGradient id="purpleHalo" cx="50%" cy="48%" r="45%">
+      <stop offset="0%" stop-color="#7c3aed" stop-opacity="0.45"/>
+      <stop offset="50%" stop-color="#4f46e5" stop-opacity="0.2"/>
+      <stop offset="100%" stop-color="#090a12" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="blueGlow" cx="65%" cy="35%" r="35%">
+      <stop offset="0%" stop-color="#38bdf8" stop-opacity="0.35"/>
+      <stop offset="60%" stop-color="#2563eb" stop-opacity="0.1"/>
+      <stop offset="100%" stop-color="#000" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="neonRing" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#38bdf8" stop-opacity="0.8"/>
+      <stop offset="50%" stop-color="#8b5cf6" stop-opacity="0.9"/>
+      <stop offset="100%" stop-color="#ec4899" stop-opacity="0.6"/>
+    </linearGradient>
+    <linearGradient id="bandGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#2d3045"/>
+      <stop offset="30%" stop-color="#191a24"/>
+      <stop offset="70%" stop-color="#12131b"/>
+      <stop offset="100%" stop-color="#2d3045"/>
+    </linearGradient>
+    <linearGradient id="cupGrad" x1="20%" y1="10%" x2="80%" y2="90%">
+      <stop offset="0%" stop-color="#27293d"/>
+      <stop offset="45%" stop-color="#14151f"/>
+      <stop offset="85%" stop-color="#0d0e14"/>
+      <stop offset="100%" stop-color="#1e202f"/>
+    </linearGradient>
+    <linearGradient id="cushionGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#1a1c26"/>
+      <stop offset="50%" stop-color="#0e0f15"/>
+      <stop offset="100%" stop-color="#181a23"/>
+    </linearGradient>
+    <linearGradient id="rimGlow" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#38bdf8"/>
+      <stop offset="50%" stop-color="#818cf8"/>
+      <stop offset="100%" stop-color="#c084fc"/>
+    </linearGradient>
+    <filter id="glowFilter" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="10" result="blur"/>
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+    <filter id="badgeGlow" x="-30%" y="-30%" width="160%" height="160%">
+      <feGaussianBlur stdDeviation="4" result="blur"/>
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+
+  <!-- Ambient Glowing Aura -->
+  <circle cx="360" cy="330" r="280" fill="url(#purpleHalo)"/>
+  <circle cx="430" cy="270" r="200" fill="url(#blueGlow)"/>
+
+  <!-- Orbital Neon Rings -->
+  <ellipse cx="360" cy="330" rx="260" ry="240" stroke="url(#neonRing)" stroke-width="2.5" stroke-opacity="0.55" stroke-dasharray="14 8" filter="url(#glowFilter)"/>
+  <ellipse cx="360" cy="330" rx="275" ry="255" stroke="#7c3aed" stroke-width="1" stroke-opacity="0.3"/>
+
+  <!-- Dynamic Equalizer Particles floating in background -->
+  <g opacity="0.4" filter="url(#glowFilter)">
+    <circle cx="170" cy="210" r="3" fill="#38bdf8"/>
+    <circle cx="210" cy="150" r="4.5" fill="#a855f7"/>
+    <circle cx="530" cy="460" r="3.5" fill="#818cf8"/>
+    <circle cx="560" cy="210" r="2.5" fill="#38bdf8"/>
+    <circle cx="160" cy="420" r="4" fill="#c084fc"/>
+  </g>
+
+  <!-- HEADPHONE ASSEMBLY (3/4 Perspective) -->
+  <g transform="translate(15, -5)">
+    <!-- Outer Headband Arch -->
+    <path d="M220,310 C205,150 280,65 375,65 C470,65 540,150 530,310" 
+          stroke="url(#bandGrad)" stroke-width="32" stroke-linecap="round"/>
+    
+    <!-- Headband Neon Rim Accent (Purple & Cyan Light Streak) -->
+    <path d="M230,290 C218,160 288,78 375,78 C462,78 528,160 520,290" 
+          stroke="url(#rimGlow)" stroke-width="3.5" stroke-linecap="round" filter="url(#glowFilter)" opacity="0.85"/>
+
+    <!-- Inner Headband Soft Cushion -->
+    <path d="M245,290 C235,175 295,95 375,95 C455,95 510,175 505,290" 
+          stroke="url(#cushionGrad)" stroke-width="18" stroke-linecap="round"/>
+
+    <!-- Metallic Extension Sliders & Hinges -->
+    <!-- Left Hinge -->
+    <rect x="205" y="295" width="26" height="38" rx="7" fill="#2d3045" stroke="#475569" stroke-width="1.5"/>
+    <rect x="210" y="303" width="16" height="4" rx="2" fill="#38bdf8" opacity="0.8"/>
+    <!-- Right Hinge -->
+    <rect x="515" y="295" width="26" height="38" rx="7" fill="#2d3045" stroke="#475569" stroke-width="1.5"/>
+    <rect x="520" y="303" width="16" height="4" rx="2" fill="#a855f7" opacity="0.8"/>
+
+    <!-- Left Earcup (Viewed slightly from back/side) -->
+    <g transform="rotate(-15 220 380)">
+      <!-- Shadow & Back plate -->
+      <ellipse cx="215" cy="380" rx="55" ry="85" fill="#0c0d13" stroke="#252837" stroke-width="2"/>
+      <!-- Neon blue inner rim lighting -->
+      <ellipse cx="218" cy="380" rx="46" ry="76" fill="none" stroke="#38bdf8" stroke-width="3" filter="url(#glowFilter)" opacity="0.75"/>
+      <!-- Soft cushion contour -->
+      <ellipse cx="225" cy="380" rx="38" ry="68" fill="url(#cupGrad)"/>
+    </g>
+
+    <!-- Center Connecting Acoustic Wave Arc -->
+    <path d="M240,430 Q360,490 460,430" stroke="#7c3aed" stroke-width="2.5" stroke-dasharray="6 6" opacity="0.4"/>
+
+    <!-- Right Earcup (Main Hero Perspective - Facing Camera) -->
+    <g transform="rotate(12 500 370)">
+      <!-- Outer Housing Shadow -->
+      <ellipse cx="495" cy="370" rx="76" ry="110" fill="#08090e"/>
+      <!-- Outer Chamfer Ring -->
+      <ellipse cx="495" cy="370" rx="72" ry="105" fill="url(#cupGrad)" stroke="#33374d" stroke-width="2.5"/>
+      <!-- Glowing Violet & Blue Edge Highlight -->
+      <ellipse cx="495" cy="370" rx="66" ry="98" fill="none" stroke="url(#rimGlow)" stroke-width="3.5" filter="url(#glowFilter)" opacity="0.9"/>
+      <!-- Cushion Wall -->
+      <ellipse cx="495" cy="370" rx="58" ry="88" fill="url(#cushionGrad)"/>
+      <!-- Center Speaker Grille Recess -->
+      <ellipse cx="495" cy="370" rx="42" ry="68" fill="#090a0f" stroke="#1f212f" stroke-width="2"/>
+      <!-- Center Logo / Driver Accent -->
+      <circle cx="495" cy="370" r="22" fill="#141622" stroke="#8b5cf6" stroke-width="1.5"/>
+      <!-- Ambient Driver Glow Core -->
+      <circle cx="495" cy="370" r="10" fill="#8b5cf6" filter="url(#glowFilter)" opacity="0.8"/>
+      <!-- Specular Highlight Sheen -->
+      <path d="M465,310 C480,300 520,305 535,325" stroke="#ffffff" stroke-width="3.5" stroke-linecap="round" opacity="0.5"/>
+    </g>
+  </g>
+
+  <!-- Floating Stylish Script Badge: "Good Music Better Days" (as in reference image) -->
+  <g transform="translate(470, 70)" filter="url(#badgeGlow)">
+    <!-- Decorative tilted handwritten script effect -->
+    <text x="50" y="50" font-family="'Brush Script MT', 'Dancing Script', 'Caveat', cursive, sans-serif" font-size="44" font-weight="600" fill="#ffffff" font-style="italic" letter-spacing="1">Good</text>
+    <text x="65" y="95" font-family="'Brush Script MT', 'Dancing Script', 'Caveat', cursive, sans-serif" font-size="44" font-weight="600" fill="#ffffff" font-style="italic" letter-spacing="1">Music</text>
+    <text x="55" y="145" font-family="'Brush Script MT', 'Dancing Script', 'Caveat', cursive, sans-serif" font-size="46" font-weight="600" fill="#ffffff" font-style="italic" letter-spacing="1">Better</text>
+    <text x="80" y="200" font-family="'Brush Script MT', 'Dancing Script', 'Caveat', cursive, sans-serif" font-size="52" font-weight="700" fill="#d946ef" font-style="italic" letter-spacing="1.5">Days</text>
+    
+    <!-- Neon Underline Swash -->
+    <path d="M70,215 Q125,230 185,210" stroke="#a855f7" stroke-width="4.5" stroke-linecap="round"/>
+    <path d="M95,225 Q135,235 170,222" stroke="#e879f9" stroke-width="2.5" stroke-linecap="round"/>
+  </g>
+
+  <!-- Lower Frequency Sound Waves -->
+  <g transform="translate(130, 520)" opacity="0.75" filter="url(#glowFilter)">
+    <rect x="0" y="25" width="4" height="20" rx="2" fill="#818cf8"/>
+    <rect x="12" y="15" width="4" height="40" rx="2" fill="#8b5cf6"/>
+    <rect x="24" y="5" width="4" height="60" rx="2" fill="#38bdf8"/>
+    <rect x="36" y="20" width="4" height="30" rx="2" fill="#8b5cf6"/>
+    <rect x="48" y="30" width="4" height="12" rx="2" fill="#818cf8"/>
+  </g>
+</svg>

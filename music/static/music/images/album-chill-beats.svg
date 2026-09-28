@@ -1,0 +1,87 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" width="100%" height="100%">
+  <defs>
+    <linearGradient id="sunsetSky" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#180b33"/>
+      <stop offset="35%" stop-color="#581845"/>
+      <stop offset="65%" stop-color="#c70039"/>
+      <stop offset="85%" stop-color="#ff5733"/>
+      <stop offset="100%" stop-color="#ffc300"/>
+    </linearGradient>
+    <linearGradient id="oceanGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#ff7f50"/>
+      <stop offset="25%" stop-color="#800040"/>
+      <stop offset="100%" stop-color="#1a0033"/>
+    </linearGradient>
+    <radialGradient id="sunBloom" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#fff5cc"/>
+      <stop offset="40%" stop-color="#ffc300"/>
+      <stop offset="100%" stop-color="#ff5733" stop-opacity="0"/>
+    </radialGradient>
+    <filter id="bloom">
+      <feGaussianBlur stdDeviation="8" result="blur"/>
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+
+  <!-- Sky -->
+  <rect width="400" height="270" fill="url(#sunsetSky)"/>
+
+  <!-- Warm Glowing Sun -->
+  <circle cx="210" cy="210" r="110" fill="url(#sunBloom)" filter="url(#bloom)"/>
+  <circle cx="210" cy="210" r="50" fill="#fffbe6"/>
+
+  <!-- Ocean Water -->
+  <rect y="270" width="400" height="130" fill="url(#oceanGrad)"/>
+
+  <!-- Sun Reflection on Ocean -->
+  <polygon points="210,270 160,400 260,400" fill="#ffc300" opacity="0.35"/>
+  <g stroke="#ffe680" stroke-width="1.8" opacity="0.6">
+    <line x1="190" y1="278" x2="230" y2="278"/>
+    <line x1="175" y1="288" x2="245" y2="288"/>
+    <line x1="160" y1="302" x2="260" y2="302"/>
+    <line x1="140" y1="322" x2="280" y2="322"/>
+    <line x1="120" y1="348" x2="300" y2="348"/>
+    <line x1="90" y1="378" x2="330" y2="378"/>
+  </g>
+
+  <!-- Distant Birds -->
+  <path d="M70,90 Q78,82 86,90 Q94,82 102,90" fill="none" stroke="#2a0845" stroke-width="2"/>
+  <path d="M98,110 Q104,103 110,110 Q116,103 122,110" fill="none" stroke="#2a0845" stroke-width="1.8"/>
+  <path d="M290,95 Q296,89 302,95 Q308,89 314,95" fill="none" stroke="#2a0845" stroke-width="1.5"/>
+
+  <!-- Palm Trees Silhouette (Right & Left) -->
+  <!-- Left Small Island -->
+  <path d="M0,285 Q50,270 90,290 L0,320 Z" fill="#0d0417"/>
+
+  <!-- Right Beach / Shoreline -->
+  <path d="M270,300 Q340,280 400,295 L400,400 L260,400 Z" fill="#0a0314"/>
+
+  <!-- Tall Palm Tree Right -->
+  <path d="M350,340 Q335,220 310,120 Q316,220 358,340 Z" fill="#080210"/>
+  <!-- Palm Fronds Right -->
+  <g fill="#080210">
+    <!-- Frond 1 -->
+    <path d="M310,120 Q240,110 200,160 Q250,135 310,125 Z"/>
+    <!-- Frond 2 -->
+    <path d="M310,120 Q260,75 220,105 Q265,95 310,122 Z"/>
+    <!-- Frond 3 -->
+    <path d="M310,120 Q300,50 315,40 Q315,80 310,120 Z"/>
+    <!-- Frond 4 -->
+    <path d="M310,120 Q360,65 385,85 Q350,95 310,122 Z"/>
+    <!-- Frond 5 -->
+    <path d="M310,120 Q380,110 410,150 Q365,130 310,124 Z"/>
+    <!-- Frond 6 droop -->
+    <path d="M310,120 Q280,140 240,195 Q280,160 310,123 Z"/>
+  </g>
+
+  <!-- Second Palm Tree -->
+  <path d="M380,330 Q370,240 365,170 Q375,240 388,330 Z" fill="#0a0314"/>
+  <g fill="#0a0314">
+    <path d="M365,170 Q315,150 280,190 Q325,170 365,172 Z"/>
+    <path d="M365,170 Q340,120 310,140 Q345,135 365,171 Z"/>
+    <path d="M365,170 Q395,130 420,155 Q395,150 365,171 Z"/>
+  </g>
+</svg>

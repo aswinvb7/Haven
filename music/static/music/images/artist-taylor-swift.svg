@@ -1,0 +1,46 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="100%" height="100%">
+  <defs>
+    <radialGradient id="taylorBg" cx="50%" cy="40%" r="60%">
+      <stop offset="0%" stop-color="#831843"/>
+      <stop offset="60%" stop-color="#500724"/>
+      <stop offset="100%" stop-color="#1f0310"/>
+    </radialGradient>
+    <clipPath id="tsClip">
+      <circle cx="100" cy="100" r="100"/>
+    </clipPath>
+  </defs>
+  <g clip-path="url(#tsClip)">
+    <rect width="200" height="200" fill="url(#taylorBg)"/>
+    <!-- Stage Glitters -->
+    <circle cx="45" cy="40" r="15" fill="#f472b6" opacity="0.3"/>
+    <circle cx="160" cy="60" r="25" fill="#fb7185" opacity="0.25"/>
+    <circle cx="140" cy="30" r="2" fill="#fff" opacity="0.8"/>
+    <circle cx="60" cy="80" r="2" fill="#fff" opacity="0.8"/>
+
+    <!-- Sparkly outfit / shoulders -->
+    <path d="M45,210 C50,165 75,150 100,150 C125,150 150,165 155,210 Z" fill="#4c0519"/>
+    <!-- Sequin highlights -->
+    <circle cx="85" cy="175" r="2" fill="#f43f5e"/>
+    <circle cx="115" cy="175" r="2" fill="#f43f5e"/>
+    <circle cx="100" cy="185" r="2" fill="#fb7185"/>
+
+    <!-- Neck -->
+    <rect x="91" y="118" width="18" height="34" fill="#fbcfe8"/>
+    <!-- Face -->
+    <ellipse cx="100" cy="96" rx="27" ry="32" fill="#fce7f3"/>
+    <!-- Eyes -->
+    <path d="M84,94 Q91,91 95,95" stroke="#1e293b" stroke-width="2" fill="none"/>
+    <path d="M105,94 Q109,91 116,95" stroke="#1e293b" stroke-width="2" fill="none"/>
+    <!-- Signature Red Lips -->
+    <ellipse cx="100" cy="112" rx="7" ry="3.5" fill="#e11d48"/>
+    <!-- Blonde Hair Waves -->
+    <!-- Back Hair Flowing Down Shoulders -->
+    <path d="M60,90 C50,130 60,180 75,190 C65,160 62,110 70,80 Z" fill="#fef08a"/>
+    <path d="M140,90 C150,130 140,180 125,190 C135,160 138,110 130,80 Z" fill="#fde047"/>
+    <!-- Bangs and Top Hair -->
+    <path d="M65,85 C65,45 135,45 135,85 C125,60 115,50 100,50 C85,50 75,60 65,85 Z" fill="#fef08a"/>
+    <!-- Signature Straight Bangs Across Forehead -->
+    <path d="M72,75 Q100,82 128,75 Q100,72 72,75 Z" fill="#facc15"/>
+    <path d="M70,82 C72,92 85,86 100,85 C115,86 128,92 130,82 C115,77 85,77 70,82 Z" fill="#fef08a"/>
+  </g>
+</svg>

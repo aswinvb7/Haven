@@ -63,31 +63,8 @@
                         <a href="/login/" class="btn btn-login" data-auth-action="login">Login</a>
                         <a href="/signup/" class="btn btn-signup" data-auth-action="signup">Sign Up</a>
                     {% endif %}
-
-                    <!-- Mobile Menu Hamburger Button -->
-                    <button class="mobile-nav-toggle" id="mobileNavToggle" aria-label="Toggle navigation menu" aria-expanded="false">
-                        <svg class="hamburger-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <line x1="3" y1="12" x2="21" y2="12"></line>
-                            <line x1="3" y1="6" x2="21" y2="6"></line>
-                            <line x1="3" y1="18" x2="21" y2="18"></line>
-                        </svg>
-                    </button>
                 </div>
             </nav>
-        </div>
-
-        <!-- Mobile Drawer Navigation -->
-        <div class="mobile-menu-drawer" id="mobileMenuDrawer" aria-label="Mobile Navigation">
-            <div class="mobile-search">
-                <input type="text" class="search-input" placeholder="Search songs, albums, artists..." aria-label="Search songs on mobile">
-            </div>
-            <div class="mobile-links">
-                <a href="{% url 'home' %}" class="nav-link active">Home</a>
-                <a href="#popular-albums" class="nav-link">Albums</a>
-                <a href="#featured-artists" class="nav-link">Artists</a>
-                <a href="#features" class="nav-link">Playlists</a>
-                <a href="#community" class="nav-link">About</a>
-            </div>
         </div>
     </header>
 

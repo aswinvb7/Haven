@@ -7,7 +7,6 @@ document.addEventListener('DOMContentLoaded', () => {
   initNavbar();
   initAuthModal();
   initLockedItems();
-  initMobileMenu();
 });
 
 /**
@@ -103,28 +102,4 @@ function initLockedItems() {
     if (albumsSection) {
       albumsSection.scrollIntoView({ behavior: 'smooth' });
     }
-  });
-}
-
-/**
- * Mobile Navigation Drawer Toggle
- */
-function initMobileMenu() {
-  const toggleBtn = document.getElementById('mobileNavToggle');
-  const drawer = document.getElementById('mobileMenuDrawer');
-
-  if (!toggleBtn || !drawer) return;
-
-  toggleBtn.addEventListener('click', () => {
-    const isOpen = drawer.classList.toggle('open');
-    toggleBtn.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
-  });
-
-  // Close mobile drawer when clicking a link
-  drawer.querySelectorAll('a').forEach(link => {
-    link.addEventListener('click', () => {
-      drawer.classList.remove('open');
-      toggleBtn.setAttribute('aria-expanded', 'false');
-    });
-  });
 }

@@ -42,31 +42,31 @@ def home(request):
         },
     ]
 
-    # Curated sample artist data matching design reference
+    # Curated sample artist data with realistic photographic portraits
     sample_artists = [
         {
             'name': 'Arijit Singh',
-            'image': 'music/images/artist-arijit-singh.svg',
+            'image': 'music/images/artist-arijit-singh.jpg',
         },
         {
             'name': 'Taylor Swift',
-            'image': 'music/images/artist-taylor-swift.svg',
+            'image': 'music/images/artist-taylor-swift.jpg',
         },
         {
             'name': 'The Weeknd',
-            'image': 'music/images/artist-the-weeknd.svg',
+            'image': 'music/images/artist-the-weeknd.jpg',
         },
         {
             'name': 'Dua Lipa',
-            'image': 'music/images/artist-dua-lipa.svg',
+            'image': 'music/images/artist-dua-lipa.jpg',
         },
         {
             'name': 'Ed Sheeran',
-            'image': 'music/images/artist-ed-sheeran.svg',
+            'image': 'music/images/artist-ed-sheeran.jpg',
         },
         {
             'name': 'Billie Eilish',
-            'image': 'music/images/artist-billie-eilish.svg',
+            'image': 'music/images/artist-billie-eilish.jpg',
         },
     ]
 

@@ -95,11 +95,12 @@ function initLockedItems() {
     });
   });
 
-  // "Explore Music" button can also prompt login or scroll to albums
+  // "Start Listening" / "Explore Music" button scrolls to albums
   const exploreBtn = document.getElementById('exploreMusicBtn');
   exploreBtn?.addEventListener('click', (e) => {
     const albumsSection = document.getElementById('popular-albums');
     if (albumsSection) {
       albumsSection.scrollIntoView({ behavior: 'smooth' });
     }
+  });
 }

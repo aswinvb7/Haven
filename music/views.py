@@ -42,37 +42,33 @@ def home(request):
         },
     ]
 
-    # Curated sample artist data with realistic photographic portraits
+    # Real photographic artist portraits from different industries
     sample_artists = [
-        {
-            'name': 'Arijit Singh',
-            'image': 'music/images/artist-arijit-singh.jpg',
-        },
-        {
-            'name': 'Taylor Swift',
-            'image': 'music/images/artist-taylor-swift.jpg',
-        },
         {
             'name': 'The Weeknd',
             'image': 'music/images/artist-the-weeknd.jpg',
+            'industry': 'Hollywood / International',
         },
         {
-            'name': 'Dua Lipa',
-            'image': 'music/images/artist-dua-lipa.jpg',
+            'name': 'Anirudh Ravichander',
+            'image': 'music/images/artist-anirudh-ravichander.jpg',
+            'industry': 'Tollywood / Telugu',
         },
         {
-            'name': 'Ed Sheeran',
-            'image': 'music/images/artist-ed-sheeran.jpg',
+            'name': 'Sushin Shyam',
+            'image': 'music/images/artist-sushin-shyam.jpg',
+            'industry': 'Mollywood / Malayalam',
         },
         {
-            'name': 'Billie Eilish',
-            'image': 'music/images/artist-billie-eilish.jpg',
+            'name': 'Arijit Singh',
+            'image': 'music/images/artist-arijit-singh.jpg',
+            'industry': 'Bollywood / Hindi',
         },
     ]
 
     try:
         db_albums = list(Album.objects.select_related('artist').all()[:5])
-        db_artists = list(Artist.objects.all()[:6])
+        db_artists = list(Artist.objects.all()[:4])
     except Exception:
         db_albums = []
         db_artists = []

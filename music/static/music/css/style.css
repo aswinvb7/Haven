@@ -7,42 +7,47 @@
    1. CSS Variables & Design Tokens
    -------------------------------------------------------------------------- */
 :root {
-  /* Color Palette */
-  --bg-base: #07070a;
-  --bg-surface: #0e0f17;
-  --bg-card: #13141f;
-  --bg-card-hover: #191b29;
+  /* Color Palette - Premium Nighttime Music Aesthetic */
+  --bg-base: #080915;
+  --bg-surface: #0e1124;
+  --bg-card: #13172e;
+  --bg-card-hover: #191e3d;
   --bg-pill: rgba(255, 255, 255, 0.06);
   --bg-pill-hover: rgba(255, 255, 255, 0.12);
 
   /* Accents */
+  --accent-cyan: #00d2ff;
+  --accent-cyan-light: #7dd3fc;
+  --accent-blue: #38bdf8;
+  --accent-blue-deep: #0284c7;
   --accent-purple: #8b5cf6;
   --accent-purple-strong: #7c3aed;
-  --accent-purple-light: #a78bfa;
+  --accent-purple-light: #c4b5fd;
   --accent-purple-glow: rgba(139, 92, 246, 0.35);
-  --accent-blue: #38bdf8;
   --accent-indigo: #6366f1;
   --accent-pink: #ec4899;
 
   /* Text Colors */
   --text-primary: #ffffff;
-  --text-secondary: #94a3b8;
+  --text-secondary: #cbd5e1;
   --text-muted: #64748b;
-  --text-accent: #c084fc;
+  --text-accent: #c4b5fd;
 
   /* Borders & Dividers */
   --border-subtle: rgba(255, 255, 255, 0.08);
   --border-card: rgba(255, 255, 255, 0.07);
-  --border-hover: rgba(139, 92, 246, 0.5);
+  --border-hover: rgba(56, 189, 248, 0.45);
 
   /* Typography */
   --font-main: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
   --font-script: 'Brush Script MT', 'Dancing Script', 'Caveat', cursive, sans-serif;
 
   /* Shadows & Glows */
+  --glow-cyan-sm: 0 0 15px rgba(0, 210, 255, 0.3);
+  --glow-cyan-lg: 0 0 30px rgba(0, 210, 255, 0.45);
   --glow-purple-sm: 0 0 15px rgba(139, 92, 246, 0.3);
   --glow-purple-lg: 0 0 35px rgba(124, 58, 237, 0.4);
-  --shadow-card: 0 10px 25px -5px rgba(0, 0, 0, 0.5), 0 8px 10px -6px rgba(0, 0, 0, 0.4);
+  --shadow-card: 0 10px 25px -5px rgba(0, 0, 0, 0.55), 0 8px 10px -6px rgba(0, 0, 0, 0.4);
 
   /* Transitions */
   --transition-fast: 0.2s cubic-bezier(0.4, 0, 0.2, 1);
@@ -155,24 +160,24 @@ button {
   top: 0;
   width: 100%;
   z-index: 100;
-  background-color: rgba(7, 7, 10, 0.75);
+  background-color: rgba(8, 9, 21, 0.85);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
-  border-bottom: 1px solid var(--border-subtle);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
   transition: background-color var(--transition-normal), border-color var(--transition-normal);
 }
 
 .site-header.scrolled {
-  background-color: rgba(7, 7, 10, 0.95);
-  border-bottom-color: rgba(255, 255, 255, 0.12);
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+  background-color: rgba(8, 9, 21, 0.98);
+  border-bottom-color: rgba(56, 189, 248, 0.15);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
 }
 
 .navbar {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  height: 4.75rem;
+  height: 4.5rem;
   gap: 1.5rem;
 }
 
@@ -181,7 +186,7 @@ button {
   display: flex;
   align-items: center;
   gap: 0.75rem;
-  font-size: 1.5rem;
+  font-size: 1.45rem;
   font-weight: 700;
   letter-spacing: -0.02em;
   color: var(--text-primary);
@@ -189,63 +194,62 @@ button {
 }
 
 .brand-icon {
-  width: 32px;
-  height: 32px;
-  filter: drop-shadow(0 0 8px rgba(139, 92, 246, 0.6));
+  width: 30px;
+  height: 30px;
+  filter: drop-shadow(0 0 8px rgba(0, 210, 255, 0.6)) drop-shadow(0 0 16px rgba(139, 92, 246, 0.4));
 }
 
 .brand-name {
-  background: linear-gradient(135deg, #ffffff 40%, #38bdf8 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
+  color: #ffffff;
   font-weight: 700;
+  letter-spacing: -0.01em;
 }
 
 /* Navigation Links */
 .nav-center {
   display: flex;
   align-items: center;
-  gap: 0.25rem;
+  gap: 1.75rem;
 }
 
 .nav-link {
   position: relative;
-  padding: 0.5rem 1rem;
+  padding: 0.4rem 0.25rem;
   font-size: 0.95rem;
   font-weight: 500;
-  color: var(--text-secondary);
-  border-radius: 9999px;
-  transition: color var(--transition-fast), background-color var(--transition-fast);
+  color: #94a3b8;
+  transition: color var(--transition-fast), text-shadow var(--transition-fast);
 }
 
 .nav-link:hover {
-  color: var(--text-primary);
+  color: #ffffff;
+  text-shadow: 0 0 12px rgba(56, 189, 248, 0.5);
 }
 
 .nav-link.active {
-  color: var(--text-primary);
+  color: #ffffff;
   font-weight: 600;
 }
 
-/* Active purple underline indicator (as in reference image) */
+/* Clear active Home indicator */
 .nav-link.active::after {
   content: "";
   position: absolute;
-  bottom: -4px;
+  bottom: -6px;
   left: 50%;
   transform: translateX(-50%);
-  width: 24px;
-  height: 3px;
+  width: 20px;
+  height: 2.5px;
   border-radius: 9999px;
-  background-color: var(--accent-purple);
-  box-shadow: 0 0 10px var(--accent-purple);
+  background: linear-gradient(90deg, #38bdf8, #8b5cf6);
+  box-shadow: 0 0 8px rgba(56, 189, 248, 0.65);
 }
 
 /* Search Bar */
 .nav-search {
   position: relative;
   width: 100%;
-  max-width: 280px;
+  max-width: 290px;
 }
 
 .search-icon {
@@ -255,16 +259,16 @@ button {
   transform: translateY(-50%);
   width: 16px;
   height: 16px;
-  color: var(--text-muted);
+  color: #64748b;
   pointer-events: none;
 }
 
 .search-input {
   width: 100%;
-  padding: 0.6rem 1rem 0.6rem 2.6rem;
+  padding: 0.55rem 1rem 0.55rem 2.5rem;
   font-size: 0.875rem;
-  background-color: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  background-color: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.12);
   border-radius: 9999px;
   color: var(--text-primary);
   outline: none;
@@ -272,13 +276,13 @@ button {
 }
 
 .search-input::placeholder {
-  color: var(--text-muted);
+  color: #64748b;
 }
 
 .search-input:focus {
-  background-color: rgba(255, 255, 255, 0.08);
-  border-color: var(--accent-purple);
-  box-shadow: 0 0 12px rgba(139, 92, 246, 0.35);
+  background-color: rgba(255, 255, 255, 0.09);
+  border-color: rgba(56, 189, 248, 0.6);
+  box-shadow: 0 0 15px rgba(56, 189, 248, 0.25);
 }
 
 /* Right Actions (Login, Sign Up) */
@@ -294,7 +298,7 @@ button {
   align-items: center;
   justify-content: center;
   gap: 0.5rem;
-  padding: 0.55rem 1.35rem;
+  padding: 0.5rem 1.35rem;
   font-size: 0.9rem;
   font-weight: 600;
   border-radius: 9999px;
@@ -303,26 +307,29 @@ button {
 }
 
 .btn-login {
-  background-color: rgba(255, 255, 255, 0.05);
-  color: var(--text-primary);
-  border: 1px solid rgba(255, 255, 255, 0.14);
+  background-color: rgba(255, 255, 255, 0.06);
+  color: #ffffff;
+  border: 1px solid rgba(255, 255, 255, 0.16);
 }
 
 .btn-login:hover {
-  background-color: rgba(255, 255, 255, 0.12);
-  border-color: rgba(255, 255, 255, 0.28);
+  background-color: rgba(0, 210, 255, 0.12);
+  border-color: rgba(0, 210, 255, 0.5);
+  color: #00d2ff;
+  box-shadow: 0 0 14px rgba(0, 210, 255, 0.25);
 }
 
 .btn-signup {
-  background: linear-gradient(135deg, #8b5cf6 0%, #38bdf8 100%);
+  background: linear-gradient(135deg, #0284c7 0%, #00d2ff 100%);
   color: #ffffff;
   border: none;
-  box-shadow: 0 0 18px rgba(139, 92, 246, 0.45), 0 2px 10px rgba(56, 189, 248, 0.25);
+  font-weight: 700;
+  box-shadow: 0 2px 14px rgba(0, 210, 255, 0.45);
 }
 
 .btn-signup:hover {
-  background: linear-gradient(135deg, #7c3aed 0%, #0284c7 100%);
-  box-shadow: 0 0 26px rgba(139, 92, 246, 0.65), 0 4px 16px rgba(56, 189, 248, 0.45);
+  background: linear-gradient(135deg, #0369a1 0%, #0ea5e9 100%);
+  box-shadow: 0 4px 22px rgba(0, 210, 255, 0.65);
   transform: translateY(-1px);
 }
 
@@ -363,7 +370,6 @@ button {
   width: 24px;
   height: 24px;
 }
-
 /* --------------------------------------------------------------------------
    4. Hero Section
    -------------------------------------------------------------------------- */
@@ -371,25 +377,33 @@ button {
   position: relative;
   overflow: hidden;
   background-color: var(--bg-base);
-  padding-top: 3.5rem;
-  padding-bottom: 3.5rem;
+  background-image: 
+    linear-gradient(rgba(5, 8, 25, 0.45), rgba(5, 8, 25, 0.45)),
+    url('../images/haven-rooftop-artwork.jpg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  padding-top: 5rem;
+  padding-bottom: 4.5rem;
+  min-height: 560px;
+  display: flex;
+  align-items: center;
 }
 
 .hero-grid {
-  display: grid;
-  grid-template-columns: 1fr 1.05fr;
+  display: flex;
   align-items: center;
-  gap: 3.5rem;
+  width: 100%;
   position: relative;
   z-index: 1;
 }
 
-/* Left Hero Content */
+/* Hero Content sitting on top of rooftop background */
 .hero-content {
   display: flex;
   flex-direction: column;
   gap: 1.5rem;
-  max-width: 540px;
+  max-width: 560px;
   z-index: 2;
 }
 
@@ -399,31 +413,36 @@ button {
   font-weight: 800;
   line-height: 1.15;
   letter-spacing: -0.03em;
-  color: #ffffff;
+  color: #FFFFFF;
+  text-shadow: 0 2px 18px rgba(0, 0, 0, 0.85), 0 0 4px rgba(0, 0, 0, 0.9);
 }
 
-/* Cyan highlight matching reference: "and" */
+/* Light lavender & soft blue accents for highlighted text */
 .highlight-cyan {
-  color: #00d2ff;
-  text-shadow: 0 0 25px rgba(0, 210, 255, 0.45);
+  color: #7DD3FC;
+  -webkit-text-fill-color: #7DD3FC;
+  background: none;
+  filter: none;
+  text-shadow: 0 2px 16px rgba(0, 0, 0, 0.85), 0 0 16px rgba(56, 189, 248, 0.35);
   font-weight: 800;
 }
 
-/* Purple gradient highlight matching reference: "fade away" */
-.highlight-purple {
-  background: linear-gradient(135deg, #a855f7 0%, #c084fc 45%, #e879f9 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  display: inline;
-  filter: drop-shadow(0 0 30px rgba(168, 85, 247, 0.35));
+.highlight-purple,
+.highlight-accent {
+  color: #C4B5FD;
+  -webkit-text-fill-color: #C4B5FD;
+  background: none;
+  filter: none;
+  text-shadow: 0 2px 16px rgba(0, 0, 0, 0.85), 0 0 16px rgba(196, 181, 253, 0.35);
   font-weight: 800;
 }
 
 .hero-description {
-  font-size: 1.12rem;
-  color: #94a3b8;
+  font-size: 1.15rem;
+  color: #E2E8F0;
   line-height: 1.6;
   max-width: 500px;
+  text-shadow: 0 2px 14px rgba(0, 0, 0, 0.8);
 }
 
 .desktop-br {
@@ -437,7 +456,7 @@ button {
   margin-top: 0.5rem;
 }
 
-/* Start Listening Button matching reference image */
+/* Start Listening Button: Blue/Cyan primary color with subtle purple glow */
 .btn-hero-play {
   display: inline-flex;
   align-items: center;
@@ -446,24 +465,26 @@ button {
   font-size: 1.05rem;
   font-weight: 700;
   border-radius: 9999px;
-  background: linear-gradient(135deg, #7c3aed 0%, #6366f1 100%);
-  color: #ffffff;
+  background: linear-gradient(135deg, #00d2ff 0%, #0284c7 100%);
+  color: #FFFFFF;
   border: none;
-  box-shadow: 0 4px 22px rgba(124, 58, 237, 0.55), 0 0 15px rgba(99, 102, 241, 0.4);
-  transition: all var(--transition-fast);
+  box-shadow: 0 4px 22px rgba(124, 58, 237, 0.45), 0 0 20px rgba(0, 210, 255, 0.4);
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.35);
+  transition: transform 0.25s ease, box-shadow 0.25s ease, background 0.25s ease;
   cursor: pointer;
 }
 
 .btn-hero-play:hover {
-  transform: translateY(-2px) scale(1.02);
-  box-shadow: 0 6px 30px rgba(124, 58, 237, 0.75), 0 0 25px rgba(99, 102, 241, 0.6);
-  background: linear-gradient(135deg, #6d28d9 0%, #4f46e5 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 30px rgba(124, 58, 237, 0.65), 0 0 28px rgba(0, 210, 255, 0.65);
+  background: linear-gradient(135deg, #38bdf8 0%, #0369a1 100%);
 }
 
 .hero-play-icon {
   width: 18px;
   height: 18px;
-  color: #ffffff;
+  color: #FFFFFF;
+  filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.35));
 }
 
 /* Statistics Below Hero */
@@ -532,19 +553,17 @@ button {
   width: 100%;
   height: auto;
   max-height: 440px;
-  object-fit: contain; /* Preserves original aspect ratio without distortion or cropping */
-  border-radius: 16px;
-  filter: drop-shadow(0 20px 40px rgba(0, 0, 0, 0.7)) drop-shadow(0 0 35px rgba(139, 92, 246, 0.25));
+  aspect-ratio: 1024 / 800;
+  object-fit: cover;
+  object-position: center;
+  border-radius: 18px;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.7), 0 0 35px rgba(139, 92, 246, 0.25);
   transition: transform var(--transition-normal);
 }
 
 .hero-artwork-img:hover {
   transform: translateY(-4px) scale(1.015);
 }
-
-/* --------------------------------------------------------------------------
-   5. Feature / Quick Access Section
-   -------------------------------------------------------------------------- */
 .features-section {
   margin-top: 1rem;
 }
@@ -791,8 +810,8 @@ button {
    -------------------------------------------------------------------------- */
 .artists-grid {
   display: grid;
-  grid-template-columns: repeat(6, 1fr);
-  gap: 1.5rem;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 2rem;
 }
 
 .artist-card {
@@ -843,6 +862,12 @@ button {
 
 .artist-card:hover .artist-name {
   color: var(--accent-purple-light);
+}
+
+.artist-industry {
+  font-size: 0.78rem;
+  color: var(--text-secondary);
+  margin-top: -0.25rem;
 }
 
 /* --------------------------------------------------------------------------
@@ -924,7 +949,7 @@ button {
    9. Footer
    -------------------------------------------------------------------------- */
 .site-footer {
-  background-color: #060609;
+  background-color: #060712;
   border-top: 1px solid var(--border-subtle);
   padding-top: 4.5rem;
   padding-bottom: 2.5rem;
@@ -1153,14 +1178,14 @@ button {
 /* Tablet & Smaller Desktops */
 @media (max-width: 1024px) {
   .hero-section {
-    padding-top: 2.75rem;
-    padding-bottom: 2.75rem;
+    padding-top: 3.5rem;
+    padding-bottom: 3.5rem;
+    min-height: 500px;
   }
 
   .hero-grid {
-    grid-template-columns: 1fr;
+    justify-content: center;
     text-align: center;
-    gap: 2.5rem;
   }
 
   .hero-content {
@@ -1188,8 +1213,8 @@ button {
   }
 
   .artists-grid {
-    grid-template-columns: repeat(3, 1fr);
-    gap: 2rem;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1.75rem;
   }
 
   .footer-grid {
@@ -1218,14 +1243,18 @@ button {
   }
 
   .hero-section {
-    padding-top: 2rem;
-    padding-bottom: 2rem;
+    padding-top: 2.5rem;
+    padding-bottom: 2.5rem;
+    min-height: 460px;
+    background-image: 
+      linear-gradient(rgba(5, 8, 25, 0.55), rgba(5, 8, 25, 0.55)),
+      url('../images/haven-rooftop-artwork.jpg');
+    background-position: center;
   }
 
   .hero-grid {
-    grid-template-columns: 1fr;
+    justify-content: center;
     text-align: center;
-    gap: 2rem;
   }
 
   .hero-content {

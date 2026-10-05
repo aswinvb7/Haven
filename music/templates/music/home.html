@@ -6,20 +6,19 @@
 {% block content %}
 <!-- ========================================================================
      HERO SECTION
-     Visually matching reference image with integrated haven-headphones artwork
+     Rooftop evening skyline background with contained 2-column hero layout
      ======================================================================== -->
-<section class="hero-section" id="hero">
+<section class="hero-section" id="hero" style="background-image: linear-gradient(rgba(5, 8, 25, 0.45), rgba(5, 8, 25, 0.45)), url('{% static 'music/images/haven-rooftop-artwork.jpg' %}'); background-size: cover; background-position: center; background-repeat: no-repeat;">
     <div class="container">
         <div class="hero-grid">
             <!-- Left Hero Content -->
             <div class="hero-content">
                 <h1 class="hero-title">
-                    Press play <span class="highlight-cyan">and</span><br>
-                    let the world <span class="highlight-purple">fade away</span>
+                    Your night. <span class="highlight-cyan">Your music.</span><br>
+                    <span class="highlight-purple">Your Haven.</span>
                 </h1>
                 <p class="hero-description">
-                    Discover amazing artists, and create your<br class="desktop-br">
-                    own music journey with people together.
+                    Escape into the music and let the city fade into the night.
                 </p>
 
                 <div class="hero-cta-group">
@@ -45,13 +44,6 @@
                         <span class="stat-value">&infin;</span>
                         <span class="stat-label">Possibilities</span>
                     </div>
-                </div>
-            </div>
-
-            <!-- Right Hero Visual (Contained within right side of hero grid) -->
-            <div class="hero-visual">
-                <div class="hero-artwork-frame">
-                    <img src="{% static 'music/images/haven-headphones.png' %}" alt="Haven Headphones Artwork" class="hero-artwork-img">
                 </div>
             </div>
         </div>
@@ -208,22 +200,25 @@
             </a>
         </div>
 
-        <!-- Artists Grid (Circular Profile Layout with Realistic Photos) -->
+        <!-- Artists Grid (Circular Profile Layout with Real Photographs) -->
         <div class="artists-grid">
             {% for artist in artists %}
             <div class="artist-card" data-locked="true" data-title="{{ artist.name }}" role="button" tabindex="0" aria-label="{{ artist.name }}">
                 <div class="artist-avatar-wrapper">
                     {% if artist.image %}
                         {% if artist.image.url %}
-                            <img src="{{ artist.image.url }}" alt="{{ artist.name }}" class="artist-avatar-img" loading="lazy">
+                            <img src="{{ artist.image.url }}" alt="{{ artist.name }} Photograph" class="artist-avatar-img" loading="lazy">
                         {% else %}
-                            <img src="{% static artist.image %}" alt="{{ artist.name }}" class="artist-avatar-img" loading="lazy">
+                            <img src="{% static artist.image %}" alt="{{ artist.name }} Photograph" class="artist-avatar-img" loading="lazy">
                         {% endif %}
                     {% else %}
-                        <img src="{% static 'music/images/artist-arijit-singh.jpg' %}" alt="{{ artist.name }}" class="artist-avatar-img" loading="lazy">
+                        <img src="{% static 'music/images/artist-arijit-singh.jpg' %}" alt="{{ artist.name }} Photograph" class="artist-avatar-img" loading="lazy">
                     {% endif %}
                 </div>
                 <h3 class="artist-name">{{ artist.name }}</h3>
+                {% if artist.industry %}
+                <p class="artist-industry">{{ artist.industry }}</p>
+                {% endif %}
             </div>
             {% endfor %}
         </div>

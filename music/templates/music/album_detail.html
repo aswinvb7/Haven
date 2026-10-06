@@ -1,0 +1,111 @@
+{% extends 'music/base.html' %}
+{% load static %}
+
+{% block title %}{{ album.title }} - {{ album.artist.name }} | Haven{% endblock %}
+
+{% block nav_home_active %}{% endblock %}
+{% block nav_albums_active %}active{% endblock %}
+
+{% block content %}
+<section class="album-detail-section" id="albumDetailSection">
+    <div class="container">
+        <!-- Back Navigation to Popular Albums on Homepage -->
+        <div class="album-nav-bar">
+            <a href="{% url 'home' %}#popular-albums" class="album-back-btn" aria-label="Back">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <line x1="19" y1="12" x2="5" y2="12"></line>
+                    <polyline points="12 19 5 12 12 5"></polyline>
+                </svg>
+                <span>Back</span>
+            </a>
+        </div>
+
+        <!-- Album Hero Header (Large Cover on Left, Info on Right) -->
+        <div class="album-hero-card">
+            <div class="album-hero-cover-wrapper">
+                {% if album.cover_image %}
+                    <img src="{{ album.cover_image.url }}" alt="{{ album.title }} Cover Art" class="album-hero-cover-img" loading="eager">
+                {% else %}
+                    <img src="{% static 'music/images/album-midnight-vibes.svg' %}" alt="{{ album.title }} Cover Art" class="album-hero-cover-img" loading="eager">
+                {% endif %}
+            </div>
+
+            <div class="album-hero-info">
+                <span class="album-type-badge">Album</span>
+                <h1 class="album-hero-title">{{ album.title }}</h1>
+                <div class="album-hero-meta">
+                    <span class="album-hero-artist"><span class="meta-label">Artist:</span> {{ album.artist.name }}</span>
+                    {% if songs %}
+                        <span class="meta-dot" aria-hidden="true">&bull;</span>
+                        <span class="album-hero-stats">{{ songs|length }} song{{ songs|length|pluralize }}</span>
+                    {% endif %}
+                </div>
+
+                <div class="album-hero-actions">
+                    <button class="btn btn-primary album-play-all-btn" type="button" aria-label="Play Album">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                            <polygon points="5 3 19 12 5 21 5 3"></polygon>
+                        </svg>
+                        <span>Play Album</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Songs Section -->
+        <div class="album-songs-container">
+            <div class="album-songs-header">
+                <h2 class="album-songs-title">Songs</h2>
+                {% if songs %}
+                    <span class="album-songs-badge">{{ songs|length }} Track{{ songs|length|pluralize }}</span>
+                {% endif %}
+            </div>
+
+            <div class="album-songs-list">
+                {% for song in songs %}
+                <div class="song-list-item" tabindex="0" role="button" aria-label="Play {{ song.title }}">
+                    <div class="song-left-col">
+                        <span class="song-number">{{ forloop.counter }}</span>
+                        <button class="song-play-btn" type="button" aria-label="Play {{ song.title }}" {% if song.audio_file %}data-audio="{{ song.audio_file.url }}"{% else %}disabled style="opacity: 0.35; cursor: not-allowed;" title="No audio file available"{% endif %}>
+                            <svg class="icon-play" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                                <polygon points="6 4 20 12 6 20 6 4"></polygon>
+                            </svg>
+                            <svg class="icon-pause" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" style="display: none;">
+                                <rect x="6" y="4" width="4" height="16"></rect>
+                                <rect x="14" y="4" width="4" height="16"></rect>
+                            </svg>
+                        </button>
+                        <div class="song-info-text">
+                            <span class="song-title">{{ song.title }}</span>
+                            <span class="song-artist-sub">{{ album.artist.name }}</span>
+                        </div>
+                    </div>
+
+                    <div class="song-right-col" aria-hidden="true">
+                        <span class="song-status-icon">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M9 18V5l12-2v13"></path>
+                                <circle cx="6" cy="18" r="3"></circle>
+                                <circle cx="18" cy="16" r="3"></circle>
+                            </svg>
+                        </span>
+                    </div>
+                </div>
+                {% empty %}
+                <div class="album-no-songs">
+                    <div class="empty-songs-icon" aria-hidden="true">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M9 18V5l12-2v13"></path>
+                            <circle cx="6" cy="18" r="3"></circle>
+                            <circle cx="18" cy="16" r="3"></circle>
+                            <line x1="2" y1="2" x2="22" y2="22"></line>
+                        </svg>
+                    </div>
+                    <p class="no-songs-text">No songs available in this album.</p>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

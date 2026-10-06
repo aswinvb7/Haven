@@ -14,7 +14,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Caveat:wght@600;700&display=swap" rel="stylesheet">
 
     <!-- Stylesheet -->
-    <link rel="stylesheet" href="{% static 'music/css/style.css' %}?v=5">
+    <link rel="stylesheet" href="{% static 'music/css/style.css' %}?v=10">
     {% block extra_css %}{% endblock %}
 </head>
 <body>
@@ -33,11 +33,11 @@
 
                 <!-- Center: Navigation Links -->
                 <div class="nav-center">
-                    <a href="{% url 'home' %}" class="nav-link active">Home</a>
-                    <a href="#popular-albums" class="nav-link">Albums</a>
-                    <a href="#featured-artists" class="nav-link">Artists</a>
-                    <a href="#features" class="nav-link">Playlists</a>
-                    <a href="#community" class="nav-link">About</a>
+                    <a href="{% url 'home' %}" class="nav-link {% block nav_home_active %}{% if request.resolver_match.url_name != 'album_detail' %}active{% endif %}{% endblock %}" data-section="hero">Home</a>
+                    <a href="{% if request.resolver_match.url_name == 'home' %}#popular-albums{% else %}{% url 'home' %}#popular-albums{% endif %}" class="nav-link {% block nav_albums_active %}{% if request.resolver_match.url_name == 'album_detail' %}active{% endif %}{% endblock %}" data-section="popular-albums">Albums</a>
+                    <a href="{% if request.resolver_match.url_name == 'home' %}#featured-artists{% else %}{% url 'home' %}#featured-artists{% endif %}" class="nav-link" data-section="featured-artists">Artists</a>
+                    <a href="{% if request.resolver_match.url_name == 'home' %}#features{% else %}{% url 'home' %}#features{% endif %}" class="nav-link" data-section="features">Playlists</a>
+                    <a href="{% if request.resolver_match.url_name == 'home' %}#community{% else %}{% url 'home' %}#community{% endif %}" class="nav-link" data-section="community">About</a>
                 </div>
 
                 <!-- Center-Right: Search Bar -->
@@ -186,7 +186,7 @@
     </div>
 
     <!-- Vanilla JavaScript -->
-    <script src="{% static 'music/js/script.js' %}"></script>
+    <script src="{% static 'music/js/script.js' %}?v=5"></script>
     {% block extra_js %}{% endblock %}
 </body>
 </html>

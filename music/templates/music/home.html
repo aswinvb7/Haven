@@ -132,7 +132,7 @@
                 <h2 class="section-title">Popular Albums</h2>
                 <p class="section-subtitle">Explore some of the most popular albums.</p>
             </div>
-            <a href="#popular-albums" class="section-view-all">
+            <a href="#popular-albums" class="section-view-all" id="viewAllAlbumsBtn" role="button">
                 View All
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
                     <line x1="5" y1="12" x2="19" y2="12"></line>
@@ -142,9 +142,9 @@
         </div>
 
         <!-- Albums Grid (Horizontal Responsive Layout) -->
-        <div class="albums-grid">
+        <div class="albums-grid" id="albumsGrid">
             {% for album in albums %}
-            <div class="album-card" data-locked="true" data-title="{{ album.title }}" role="button" tabindex="0" aria-label="{{ album.title }} by {{ album.artist.name }} - Login to listen">
+            <a href="{% url 'album_detail' album.id %}" class="album-card" {% if not user.is_authenticated %}data-locked="true"{% endif %} data-title="{{ album.title }}" aria-label="{{ album.title }} by {{ album.artist.name }}{% if not user.is_authenticated %} - Login to listen{% endif %}">
                 <!-- Album Cover with Locked Overlay -->
                 <div class="album-cover-container">
                     {% if album.cover_image %}
@@ -157,6 +157,7 @@
                         <img src="{% static 'music/images/album-midnight-vibes.svg' %}" alt="{{ album.title }} Album Art" class="album-cover-img" loading="lazy">
                     {% endif %}
 
+                    {% if not user.is_authenticated %}
                     <!-- Locked Overlay communicating playback requires authentication -->
                     <div class="album-locked-overlay">
                         <div class="lock-badge-icon" aria-hidden="true">
@@ -167,6 +168,7 @@
                         </div>
                         <span class="lock-text">Login to listen</span>
                     </div>
+                    {% endif %}
                 </div>
 
                 <!-- Album Metadata -->
@@ -174,7 +176,7 @@
                     <h3 class="album-title">{{ album.title }}</h3>
                     <p class="album-artist">{{ album.artist.name }}</p>
                 </div>
-            </div>
+            </a>
             {% endfor %}
         </div>
     </div>
@@ -191,7 +193,7 @@
                 <h2 class="section-title">Featured Artists</h2>
                 <p class="section-subtitle">Discover the artists behind the music.</p>
             </div>
-            <a href="#featured-artists" class="section-view-all">
+            <a href="#featured-artists" class="section-view-all" id="viewAllArtistsBtn" role="button">
                 View All
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
                     <line x1="5" y1="12" x2="19" y2="12"></line>
@@ -201,7 +203,7 @@
         </div>
 
         <!-- Artists Grid (Circular Profile Layout with Real Photographs) -->
-        <div class="artists-grid">
+        <div class="artists-grid" id="artistsGrid">
             {% for artist in artists %}
             <div class="artist-card" data-locked="true" data-title="{{ artist.name }}" role="button" tabindex="0" aria-label="{{ artist.name }}">
                 <div class="artist-avatar-wrapper">

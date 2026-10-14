@@ -14,7 +14,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Caveat:wght@600;700&display=swap" rel="stylesheet">
 
     <!-- Stylesheet -->
-    <link rel="stylesheet" href="{% static 'music/css/style.css' %}?v=10">
+    <link rel="stylesheet" href="{% static 'music/css/style.css' %}?v=16">
     {% block extra_css %}{% endblock %}
 </head>
 <body>
@@ -41,13 +41,13 @@
                 </div>
 
                 <!-- Center-Right: Search Bar -->
-                <div class="nav-search">
+                <form action="{% url 'search' %}" method="GET" class="nav-search" role="search">
                     <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                         <circle cx="11" cy="11" r="8"></circle>
                         <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
                     </svg>
-                    <input type="text" class="search-input" placeholder="Search songs, albums, artists..." aria-label="Search music">
-                </div>
+                    <input type="text" name="q" value="{{ query|default:'' }}" class="search-input" placeholder="Search songs, albums, artists..." aria-label="Search music" autocomplete="off">
+                </form>
 
                 <!-- Right: Authentication Actions -->
                 <div class="nav-actions">
@@ -186,7 +186,7 @@
     </div>
 
     <!-- Vanilla JavaScript -->
-    <script src="{% static 'music/js/script.js' %}?v=5"></script>
+    <script src="{% static 'music/js/script.js' %}?v=12"></script>
     {% block extra_js %}{% endblock %}
 </body>
 </html>

@@ -1,0 +1,372 @@
+{% extends 'music/base.html' %}
+{% load static %}
+
+{% block title %}
+    {% if selected_artist %}
+        {{ selected_artist.name }} - Artist | Haven
+    {% elif query %}
+        Search: "{{ query }}" | Haven
+    {% else %}
+        Search Music | Haven
+    {% endif %}
+{% endblock %}
+
+{% block nav_home_active %}{% endblock %}
+{% block nav_albums_active %}{% endblock %}
+
+{% block content %}
+<section class="search-page-section" id="searchPageSection">
+    <div class="container">
+        <!-- Back Navigation Bar -->
+        <div class="search-nav-bar">
+            {% if selected_artist and from_q %}
+                <a href="{% url 'search' %}?q={{ from_q|urlencode }}" class="search-back-btn" aria-label="Back to search results">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <line x1="19" y1="12" x2="5" y2="12"></line>
+                        <polyline points="12 19 5 12 12 5"></polyline>
+                    </svg>
+                    <span>Back to results for "{{ from_q }}"</span>
+                </a>
+            {% elif selected_artist %}
+                <a href="{% url 'home' %}#featured-artists" class="search-back-btn" aria-label="Back to Artists">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <line x1="19" y1="12" x2="5" y2="12"></line>
+                        <polyline points="12 19 5 12 12 5"></polyline>
+                    </svg>
+                    <span>Back to Artists</span>
+                </a>
+            {% else %}
+                <a href="{% url 'home' %}" class="search-back-btn" aria-label="Back to Home">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <line x1="19" y1="12" x2="5" y2="12"></line>
+                        <polyline points="12 19 5 12 12 5"></polyline>
+                    </svg>
+                    <span>Back to Home</span>
+                </a>
+            {% endif %}
+        </div>
+
+        {% if selected_artist %}
+        <!-- ====================================================================
+             ARTIST SHOWCASE (TEMPORARY ARTIST & ASSOCIATED ALBUMS VIEW)
+             ==================================================================== -->
+        <div class="artist-showcase-card">
+            <div class="artist-showcase-avatar-wrapper">
+                {% if selected_artist.image %}
+                    <img src="{{ selected_artist.image.url }}" alt="{{ selected_artist.name }}" class="artist-showcase-avatar">
+                {% else %}
+                    <img src="{% static 'music/images/artist-arijit-singh.jpg' %}" alt="{{ selected_artist.name }}" class="artist-showcase-avatar">
+                {% endif %}
+            </div>
+            <div class="artist-showcase-info">
+                <span class="search-pill-badge">Artist</span>
+                <h1 class="artist-showcase-name">{{ selected_artist.name }}</h1>
+                <p class="artist-showcase-meta">
+                    <span>{{ artist_albums|length }} Album{{ artist_albums|length|pluralize }}</span>
+                    <span class="meta-dot" aria-hidden="true">&bull;</span>
+                    <span>{{ artist_songs|length }} Song{{ artist_songs|length|pluralize }}</span>
+                </p>
+            </div>
+        </div>
+
+        <!-- Associated Albums Section -->
+        <div class="search-results-group">
+            <div class="search-group-header">
+                <div class="search-group-title-wrap">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" class="search-section-icon" aria-hidden="true">
+                        <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+                        <circle cx="12" cy="12" r="4"></circle>
+                    </svg>
+                    <h2 class="search-group-title">Albums by {{ selected_artist.name }}</h2>
+                </div>
+                <span class="search-count-pill">{{ artist_albums|length }} Album{{ artist_albums|length|pluralize }}</span>
+            </div>
+
+            {% if artist_albums %}
+            <div class="search-albums-grid">
+                {% for album in artist_albums %}
+                <a href="{% url 'album_detail' album.id %}" class="album-card search-card-item" aria-label="{{ album.title }}">
+                    <div class="album-cover-container">
+                        {% if album.cover_image %}
+                            <img src="{{ album.cover_image.url }}" alt="{{ album.title }}" class="album-cover-img" loading="lazy">
+                        {% else %}
+                            <img src="{% static 'music/images/album-midnight-vibes.svg' %}" alt="{{ album.title }}" class="album-cover-img" loading="lazy">
+                        {% endif %}
+                    </div>
+                    <div class="album-info">
+                        <h3 class="album-title">{{ album.title }}</h3>
+                        <p class="album-artist">{{ album.artist.name }}</p>
+                    </div>
+                </a>
+                {% endfor %}
+            </div>
+            {% else %}
+            <div class="search-empty-subgroup">
+                <p>No albums currently listed for this artist.</p>
+            </div>
+            {% endif %}
+        </div>
+
+        <!-- Associated Songs Section -->
+        {% if artist_songs %}
+        <div class="search-results-group">
+            <div class="search-group-header">
+                <div class="search-group-title-wrap">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" class="search-section-icon" aria-hidden="true">
+                        <path d="M9 18V5l12-2v13"></path>
+                        <circle cx="6" cy="18" r="3"></circle>
+                        <circle cx="18" cy="16" r="3"></circle>
+                    </svg>
+                    <h2 class="search-group-title">Songs by {{ selected_artist.name }}</h2>
+                </div>
+                <span class="search-count-pill">{{ artist_songs|length }} Track{{ artist_songs|length|pluralize }}</span>
+            </div>
+
+            <div class="search-songs-list">
+                {% for song in artist_songs %}
+                <a href="{% if song.album %}{% url 'album_detail' song.album.id %}{% else %}#{% endif %}" class="search-song-row" aria-label="Open album for {{ song.title }}">
+                    <div class="search-song-left">
+                        <span class="search-song-num">{{ forloop.counter }}</span>
+                        <div class="search-song-thumb-wrap">
+                            {% if song.album and song.album.cover_image %}
+                                <img src="{{ song.album.cover_image.url }}" alt="{{ song.title }}" class="search-song-thumb" loading="lazy">
+                            {% else %}
+                                <img src="{% static 'music/images/album-midnight-vibes.svg' %}" alt="{{ song.title }}" class="search-song-thumb" loading="lazy">
+                            {% endif %}
+                            <div class="search-song-thumb-overlay" aria-hidden="true">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+                                    <polygon points="6 4 20 12 6 20 6 4"></polygon>
+                                </svg>
+                            </div>
+                        </div>
+                        <div class="search-song-meta">
+                            <span class="search-song-title">{{ song.title }}</span>
+                            <span class="search-song-artist">{{ song.artist.name }}</span>
+                        </div>
+                    </div>
+                    <div class="search-song-right">
+                        <span class="search-song-album-tag">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                <circle cx="12" cy="12" r="10"></circle>
+                                <circle cx="12" cy="12" r="3"></circle>
+                            </svg>
+                            {{ song.album.title|default:"Single" }}
+                        </span>
+                        <span class="search-song-action-arrow" aria-hidden="true">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                                <polyline points="9 18 15 12 9 6"></polyline>
+                            </svg>
+                        </span>
+                    </div>
+                </a>
+                {% endfor %}
+            </div>
+        </div>
+        {% endif %}
+
+        {% elif query %}
+        <!-- ====================================================================
+             SEARCH QUERY RESULTS
+             ==================================================================== -->
+        <div class="search-header-block">
+            <div class="search-header-info">
+                <span class="search-pill-badge">Search Results</span>
+                <h1 class="search-query-heading">
+                    Results for <span class="search-highlight">"{{ query }}"</span>
+                </h1>
+                <p class="search-meta-desc">
+                    Found <strong>{{ total_count }}</strong> matching item{{ total_count|pluralize }}
+                </p>
+            </div>
+        </div>
+
+        {% if total_count > 0 %}
+            <!-- Songs Results -->
+            {% if songs %}
+            <div class="search-results-group">
+                <div class="search-group-header">
+                    <div class="search-group-title-wrap">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" class="search-section-icon" aria-hidden="true">
+                            <path d="M9 18V5l12-2v13"></path>
+                            <circle cx="6" cy="18" r="3"></circle>
+                            <circle cx="18" cy="16" r="3"></circle>
+                        </svg>
+                        <h2 class="search-group-title">Songs</h2>
+                    </div>
+                    <span class="search-count-pill">{{ songs|length }} Track{{ songs|length|pluralize }}</span>
+                </div>
+
+                <div class="search-songs-list">
+                    {% for song in songs %}
+                    <a href="{% if song.album %}{% url 'album_detail' song.album.id %}{% else %}#{% endif %}" class="search-song-row" aria-label="Open album for {{ song.title }}">
+                        <div class="search-song-left">
+                            <span class="search-song-num">{{ forloop.counter }}</span>
+                            <div class="search-song-thumb-wrap">
+                                {% if song.album and song.album.cover_image %}
+                                    <img src="{{ song.album.cover_image.url }}" alt="{{ song.title }}" class="search-song-thumb" loading="lazy">
+                                {% else %}
+                                    <img src="{% static 'music/images/album-midnight-vibes.svg' %}" alt="{{ song.title }}" class="search-song-thumb" loading="lazy">
+                                {% endif %}
+                                <div class="search-song-thumb-overlay" aria-hidden="true">
+                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+                                        <polygon points="6 4 20 12 6 20 6 4"></polygon>
+                                    </svg>
+                                </div>
+                            </div>
+                            <div class="search-song-meta">
+                                <span class="search-song-title">{{ song.title }}</span>
+                                <span class="search-song-artist">{{ song.artist.name }}</span>
+                            </div>
+                        </div>
+                        <div class="search-song-right">
+                            <span class="search-song-album-tag">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                    <circle cx="12" cy="12" r="10"></circle>
+                                    <circle cx="12" cy="12" r="3"></circle>
+                                </svg>
+                                {{ song.album.title|default:"Single" }}
+                            </span>
+                            <span class="search-song-action-arrow" aria-hidden="true">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                                    <polyline points="9 18 15 12 9 6"></polyline>
+                                </svg>
+                            </span>
+                        </div>
+                    </a>
+                    {% endfor %}
+                </div>
+            </div>
+            {% endif %}
+
+            <!-- Albums Results -->
+            {% if albums %}
+            <div class="search-results-group">
+                <div class="search-group-header">
+                    <div class="search-group-title-wrap">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" class="search-section-icon" aria-hidden="true">
+                            <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+                            <circle cx="12" cy="12" r="4"></circle>
+                        </svg>
+                        <h2 class="search-group-title">Albums</h2>
+                    </div>
+                    <span class="search-count-pill">{{ albums|length }} Album{{ albums|length|pluralize }}</span>
+                </div>
+
+                <div class="search-albums-grid">
+                    {% for album in albums %}
+                    <a href="{% url 'album_detail' album.id %}" class="album-card search-card-item" aria-label="{{ album.title }} by {{ album.artist.name }}">
+                        <div class="album-cover-container">
+                            {% if album.cover_image %}
+                                <img src="{{ album.cover_image.url }}" alt="{{ album.title }}" class="album-cover-img" loading="lazy">
+                            {% else %}
+                                <img src="{% static 'music/images/album-midnight-vibes.svg' %}" alt="{{ album.title }}" class="album-cover-img" loading="lazy">
+                            {% endif %}
+                        </div>
+                        <div class="album-info">
+                            <h3 class="album-title">{{ album.title }}</h3>
+                            <p class="album-artist">{{ album.artist.name }}</p>
+                        </div>
+                    </a>
+                    {% endfor %}
+                </div>
+            </div>
+            {% endif %}
+
+            <!-- Artists Results -->
+            {% if artists %}
+            <div class="search-results-group">
+                <div class="search-group-header">
+                    <div class="search-group-title-wrap">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" class="search-section-icon" aria-hidden="true">
+                            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                            <circle cx="12" cy="7" r="4"></circle>
+                        </svg>
+                        <h2 class="search-group-title">Artists</h2>
+                    </div>
+                    <span class="search-count-pill">{{ artists|length }} Artist{{ artists|length|pluralize }}</span>
+                </div>
+
+                <div class="search-artists-grid">
+                    {% for artist in artists %}
+                    <a href="{% url 'artist_detail' artist.id %}" class="artist-card search-artist-card" aria-label="{{ artist.name }} - View artist">
+                        <div class="artist-avatar-wrapper">
+                            {% if artist.image %}
+                                <img src="{{ artist.image.url }}" alt="{{ artist.name }}" class="artist-avatar-img" loading="lazy">
+                            {% else %}
+                                <img src="{% static 'music/images/artist-arijit-singh.jpg' %}" alt="{{ artist.name }}" class="artist-avatar-img" loading="lazy">
+                            {% endif %}
+                        </div>
+                        <h3 class="artist-name">{{ artist.name }}</h3>
+                        <span class="search-artist-action-pill">View Artist &rarr;</span>
+                    </a>
+                    {% endfor %}
+                </div>
+            </div>
+            {% endif %}
+
+        {% else %}
+            <!-- Friendly No Results Found State -->
+            <div class="search-empty-state">
+                <div class="search-empty-icon-wrap" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="11" cy="11" r="8"></circle>
+                        <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                        <line x1="8" y1="11" x2="14" y2="11"></line>
+                    </svg>
+                </div>
+                <h2 class="search-empty-title">No results found for "{{ query }}"</h2>
+                <p class="search-empty-text">
+                    We couldn't find any songs, albums, or artists matching your search.
+                </p>
+
+                <div class="search-tips-card">
+                    <h3 class="search-tips-title">Search suggestions:</h3>
+                    <ul class="search-tips-list">
+                        <li>Check your spelling for any typos</li>
+                        <li>Try searching with a shorter or more generic keyword (e.g. "Star", "Singh")</li>
+                        <li>Search specifically for the song title, album title, or artist name</li>
+                    </ul>
+                </div>
+
+                <div class="search-empty-actions">
+                    <a href="{% url 'home' %}#popular-albums" class="btn btn-primary">
+                        Browse Popular Albums
+                    </a>
+                    <a href="{% url 'home' %}#featured-artists" class="btn btn-secondary">
+                        Explore Featured Artists
+                    </a>
+                </div>
+            </div>
+        {% endif %}
+
+        {% else %}
+        <!-- ====================================================================
+             NO QUERY PROVIDED - WELCOME / DISCOVERY STATE
+             ==================================================================== -->
+        <div class="search-welcome-state">
+            <div class="search-welcome-icon-wrap" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="11" cy="11" r="8"></circle>
+                    <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                </svg>
+            </div>
+            <h1 class="search-welcome-title">Search Haven</h1>
+            <p class="search-welcome-text">
+                Type in the search bar above to discover songs, albums, and artists in our library.
+            </p>
+
+            <div class="search-quick-suggestions">
+                <span class="quick-suggestions-label">Try searching for:</span>
+                <div class="quick-tags">
+                    <a href="{% url 'search' %}?q=Starboy" class="quick-tag">Starboy</a>
+                    <a href="{% url 'search' %}?q=Anirudh" class="quick-tag">Anirudh</a>
+                    <a href="{% url 'search' %}?q=Arijith" class="quick-tag">Arijith Singh</a>
+                    <a href="{% url 'search' %}?q=Jailer" class="quick-tag">Jailer</a>
+                    <a href="{% url 'search' %}?q=Kumbalangi" class="quick-tag">Kumbalangi Nights</a>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+</section>
+{% endblock %}

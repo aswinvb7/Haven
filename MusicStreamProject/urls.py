@@ -25,4 +25,5 @@ urlpatterns = [
 ]
 
 if settings.DEBUG:
-    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+    from music.media_serve import ranged_serve
+    urlpatterns += static(settings.MEDIA_URL, view=ranged_serve, document_root=settings.MEDIA_ROOT)

@@ -57,7 +57,7 @@
     <div class="container">
         <div class="features-grid">
             <!-- 1. Discover -->
-            <div class="feature-card" data-locked="true" data-title="Discover Music">
+            <a href="{% url 'discover' %}" class="feature-card" aria-label="Discover - Find new music">
                 <div class="feature-icon-wrapper" aria-hidden="true">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                         <path d="M9 18V5l12-2v13"></path>
@@ -69,10 +69,10 @@
                     <h3 class="feature-title">Discover</h3>
                     <p class="feature-subtitle">Find new music</p>
                 </div>
-            </div>
+            </a>
 
             <!-- 2. Follow Artists -->
-            <div class="feature-card" data-locked="true" data-title="Follow Artists">
+            <a href="{% url 'followed_artists' %}" class="feature-card" {% if not user.is_authenticated %}data-locked="true" data-title="Follow Artists"{% endif %} aria-label="Follow Artists - Stay updated">
                 <div class="feature-icon-wrapper" aria-hidden="true">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                         <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
@@ -85,10 +85,10 @@
                     <h3 class="feature-title">Follow Artists</h3>
                     <p class="feature-subtitle">Stay updated</p>
                 </div>
-            </div>
+            </a>
 
             <!-- 3. Create Playlists -->
-            <div class="feature-card" data-locked="true" data-title="Create Playlists">
+            <a href="{% url 'create_playlist' %}" class="feature-card" {% if not user.is_authenticated %}data-locked="true" data-title="Create Playlists"{% endif %} aria-label="Create Playlists - Build your collection">
                 <div class="feature-icon-wrapper" aria-hidden="true">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                         <line x1="8" y1="6" x2="21" y2="6"></line>
@@ -103,10 +103,10 @@
                     <h3 class="feature-title">Create Playlists</h3>
                     <p class="feature-subtitle">Build your collection</p>
                 </div>
-            </div>
+            </a>
 
             <!-- 4. Your Library -->
-            <div class="feature-card" data-locked="true" data-title="Your Library">
+            <a href="{% url 'liked_songs' %}" class="feature-card" {% if not user.is_authenticated %}data-locked="true" data-title="Your Library"{% endif %} aria-label="Your Library - Save your favorites">
                 <div class="feature-icon-wrapper" aria-hidden="true">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                         <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
@@ -116,10 +116,121 @@
                     <h3 class="feature-title">Your Library</h3>
                     <p class="feature-subtitle">Save your favorites</p>
                 </div>
-            </div>
+            </a>
         </div>
     </div>
 </section>
+
+{% if user.is_authenticated %}
+<!-- ========================================================================
+     RECENTLY PLAYED SECTION (AUTHENTICATED USERS)
+     ======================================================================== -->
+<section class="recently-played-section" id="recently-played">
+    <div class="container">
+        <!-- Section Header -->
+        <div class="section-header">
+            <div class="section-title-group">
+                <h2 class="section-title">Recently Played</h2>
+                <p class="section-subtitle">Pick up where you left off.</p>
+            </div>
+            {% if recently_played %}
+            <a href="{% url 'recently_played' %}" class="section-view-all" aria-label="View all recently played tracks" title="View all recently played">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <line x1="5" y1="12" x2="19" y2="12"></line>
+                    <polyline points="12 5 19 12 12 19"></polyline>
+                </svg>
+            </a>
+            {% endif %}
+        </div>
+
+        {% if recently_played %}
+        <!-- Recently Played Grid -->
+        <div class="recently-played-grid" id="recentlyPlayedGrid">
+            {% for song in recently_played %}
+            <div class="song-list-item recently-played-card" tabindex="0" role="button" aria-label="Play {{ song.title }} by {{ song.artist.name }}" data-song-id="{{ song.id }}">
+                <div class="recently-played-cover-wrap">
+                    {% if song.album and song.album.cover_image %}
+                        <img src="{{ song.album.cover_image.url }}" alt="{{ song.title }} Cover Art" class="recently-played-cover-img" loading="lazy">
+                    {% elif song.artist and song.artist.image %}
+                        <img src="{{ song.artist.image.url }}" alt="{{ song.title }} Cover Art" class="recently-played-cover-img" loading="lazy">
+                    {% else %}
+                        <img src="{% static 'music/images/album-midnight-vibes.svg' %}" alt="{{ song.title }} Cover Art" class="recently-played-cover-img" loading="lazy">
+                    {% endif %}
+
+                    <button class="song-play-btn recently-played-play-btn" type="button" aria-label="Play {{ song.title }}"
+                            {% if song.audio_file %}
+                            data-audio="{{ song.audio_file.url }}"
+                            data-song-id="{{ song.id }}"
+                            data-title="{{ song.title }}"
+                            data-artist="{{ song.artist.name }}"
+                            data-cover="{% if song.album and song.album.cover_image %}{{ song.album.cover_image.url }}{% elif song.artist and song.artist.image %}{{ song.artist.image.url }}{% else %}{% static 'music/images/album-midnight-vibes.svg' %}{% endif %}"
+                            data-album="{% if song.album %}{{ song.album.title }}{% else %}Haven Stream{% endif %}"
+                            {% else %}
+                            disabled style="opacity: 0.35; cursor: not-allowed;" title="No audio file available"
+                            {% endif %}>
+                        <svg class="icon-play" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                            <polygon points="6 4 20 12 6 20 6 4"></polygon>
+                        </svg>
+                        <svg class="icon-pause" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" style="display: none;">
+                            <rect x="6" y="4" width="4" height="16"></rect>
+                            <rect x="14" y="4" width="4" height="16"></rect>
+                        </svg>
+                    </button>
+                </div>
+
+                <div class="recently-played-info">
+                    <span class="song-title recently-played-title" title="{{ song.title }}">{{ song.title }}</span>
+                    <span class="song-artist-sub recently-played-artist" title="{{ song.artist.name }}">{{ song.artist.name }}</span>
+                    {% if song.last_played_at %}
+                    <span class="recently-played-time">{{ song.last_played_at|timesince }} ago</span>
+                    {% endif %}
+                </div>
+
+                <div class="recently-played-card-actions">
+                    <button type="button"
+                            class="song-like-btn {% if song.id in liked_song_ids %}liked{% endif %}"
+                            data-song-id="{{ song.id }}"
+                            data-song-title="{{ song.title }}"
+                            data-authenticated="true"
+                            aria-label="{% if song.id in liked_song_ids %}Unlike {{ song.title }}{% else %}Like {{ song.title }}{% endif %}"
+                            title="{% if song.id in liked_song_ids %}Unlike{% else %}Like{% endif %}">
+                        <svg class="icon-heart" viewBox="0 0 24 24" fill="{% if song.id in liked_song_ids %}currentColor{% else %}none{% endif %}" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                            <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+                        </svg>
+                    </button>
+                    <button type="button"
+                            class="song-add-playlist-btn"
+                            data-song-id="{{ song.id }}"
+                            data-song-title="{{ song.title }}"
+                            aria-label="Add {{ song.title }} to playlist"
+                            title="Add to playlist">
+                        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                            <line x1="12" y1="5" x2="12" y2="19"></line>
+                            <line x1="5" y1="12" x2="19" y2="12"></line>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        {% else %}
+        <!-- Empty State for New Users -->
+        <div class="recently-played-empty-card">
+            <div class="empty-icon-wrap" aria-hidden="true">
+                <svg viewBox="0 0 24 24" width="36" height="36" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="12" cy="12" r="10"></circle>
+                    <polyline points="12 6 12 12 16 14"></polyline>
+                </svg>
+            </div>
+            <div class="empty-text-wrap">
+                <h3 class="empty-title">No listening history yet</h3>
+                <p class="empty-subtitle">Play songs from popular albums or search your favorite artists to start building your personal listening history.</p>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+</section>
+{% endif %}
 
 <!-- ========================================================================
      POPULAR ALBUMS SECTION
@@ -139,7 +250,7 @@
             <!-- Albums Grid (Horizontal Responsive Layout) -->
             <div class="albums-grid" id="albumsGrid">
                 {% for album in albums %}
-                <a href="{% url 'album_detail' album.id %}" class="album-card" {% if not user.is_authenticated %}data-locked="true"{% endif %} data-title="{{ album.title }}" aria-label="{{ album.title }} by {{ album.artist.name }}{% if not user.is_authenticated %} - Login to listen{% endif %}">
+                <a href="{% if album.id %}{% url 'album_detail' album.id %}{% else %}#popular-albums{% endif %}" class="album-card" {% if not user.is_authenticated %}data-locked="true"{% endif %} data-title="{{ album.title }}" aria-label="{{ album.title }} by {{ album.artist.name }}{% if not user.is_authenticated %} - Login to listen{% endif %}">
                     <!-- Album Cover with Locked Overlay -->
                     <div class="album-cover-container">
                         {% if album.cover_image %}
@@ -203,7 +314,7 @@
             <!-- Artists Grid (Circular Profile Layout with Real Photographs) -->
             <div class="artists-grid" id="artistsGrid">
                 {% for artist in artists %}
-                <a href="{% url 'artist_detail' artist.id %}" class="artist-card" aria-label="{{ artist.name }}">
+                <a href="{% if artist.id %}{% url 'artist_detail' artist.id %}{% else %}#featured-artists{% endif %}" class="artist-card" aria-label="{{ artist.name }}">
                     <div class="artist-avatar-wrapper">
                         {% if artist.image %}
                             {% if artist.image.url %}

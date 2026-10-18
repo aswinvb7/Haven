@@ -1,0 +1,319 @@
+{% extends 'music/base.html' %}
+{% load static %}
+
+{% block title %}Discover Music | Haven{% endblock %}
+
+{% block nav_home_active %}{% endblock %}
+
+{% block content %}
+<section class="discover-page-section" id="discoverPageSection">
+    <div class="container">
+        <!-- Back Navigation Bar -->
+        <div class="search-nav-bar">
+            <a href="{% url 'home' %}" class="search-back-btn" aria-label="Back to Home">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <line x1="19" y1="12" x2="5" y2="12"></line>
+                    <polyline points="12 19 5 12 12 5"></polyline>
+                </svg>
+                <span>Back to Home</span>
+            </a>
+        </div>
+
+        <!-- Page Header -->
+        <div class="discover-header-block">
+            <div class="discover-header-info">
+                <span class="search-pill-badge">Explore & Discover</span>
+                <h1 class="discover-title">Discover Music</h1>
+                <p class="discover-subtitle">
+                    Explore curated albums, standout artists, and fresh releases across Haven's catalog.
+                </p>
+            </div>
+            {% if total_songs_count or total_albums_count or total_artists_count %}
+            <div class="discover-stats-pills">
+                <span class="discover-stat-pill">{{ total_artists_count }} Artist{{ total_artists_count|pluralize }}</span>
+                <span class="discover-stat-pill">{{ total_albums_count }} Album{{ total_albums_count|pluralize }}</span>
+                <span class="discover-stat-pill">{{ total_songs_count }} Track{{ total_songs_count|pluralize }}</span>
+            </div>
+            {% endif %}
+        </div>
+
+        {% if featured_album %}
+        <!-- ====================================================================
+             1. SPOTLIGHT RELEASE HERO
+             ==================================================================== -->
+        <div class="album-hero-card discover-spotlight-card">
+            <div class="album-hero-cover-wrapper">
+                {% if featured_album.cover_image %}
+                    <img src="{{ featured_album.cover_image.url }}" alt="{{ featured_album.title }} Cover Art" class="album-hero-cover-img" loading="eager">
+                {% else %}
+                    <img src="{% static 'music/images/album-midnight-vibes.svg' %}" alt="{{ featured_album.title }} Cover Art" class="album-hero-cover-img" loading="eager">
+                {% endif %}
+            </div>
+
+            <div class="album-hero-info">
+                <span class="album-type-badge">Spotlight Release</span>
+                <h2 class="album-hero-title">{{ featured_album.title }}</h2>
+                <div class="album-hero-meta">
+                    <span class="album-hero-artist">
+                        <span class="meta-label">Artist:</span>
+                        <a href="{% url 'artist_detail' featured_album.artist.id %}" class="discover-artist-link" title="View {{ featured_album.artist.name }}">
+                            {{ featured_album.artist.name }}
+                        </a>
+                    </span>
+                    <span class="meta-dot" aria-hidden="true">&bull;</span>
+                    <span class="album-hero-stats">{{ featured_album.song_set.count }} Track{{ featured_album.song_set.count|pluralize }}</span>
+                </div>
+
+                <div class="album-hero-actions">
+                    <a href="{% url 'album_detail' featured_album.id %}" class="btn btn-primary" aria-label="View {{ featured_album.title }}">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                            <circle cx="12" cy="12" r="10"></circle>
+                            <polygon points="10 8 16 12 10 16 10 8"></polygon>
+                        </svg>
+                        <span>View Album</span>
+                    </a>
+                    <a href="{% url 'artist_detail' featured_album.artist.id %}" class="btn btn-secondary" aria-label="Explore {{ featured_album.artist.name }}">
+                        Explore Artist
+                    </a>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+
+        <!-- ====================================================================
+             2. FEATURED ARTISTS SECTION
+             ==================================================================== -->
+        {% if artists %}
+        <div class="search-results-group" style="margin-top: 2.5rem;">
+            <div class="search-group-header">
+                <div class="search-group-title-wrap">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" class="search-section-icon" aria-hidden="true">
+                        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                        <circle cx="12" cy="7" r="4"></circle>
+                    </svg>
+                    <h2 class="search-group-title">Featured Artists</h2>
+                </div>
+                <span class="search-count-pill">{{ artists|length }} Artist{{ artists|length|pluralize }}</span>
+            </div>
+
+            <div class="search-artists-grid">
+                {% for artist in artists %}
+                <div class="artist-card search-artist-card discover-artist-card" data-artist-id="{{ artist.id }}">
+                    <a href="{% url 'artist_detail' artist.id %}" class="discover-artist-avatar-link" aria-label="{{ artist.name }}">
+                        <div class="artist-avatar-wrapper">
+                            {% if artist.image %}
+                                <img src="{{ artist.image.url }}" alt="{{ artist.name }}" class="artist-avatar-img" loading="lazy">
+                            {% else %}
+                                <img src="{% static 'music/images/artist-arijit-singh.jpg' %}" alt="{{ artist.name }}" class="artist-avatar-img" loading="lazy">
+                            {% endif %}
+                        </div>
+                        <h3 class="artist-name">{{ artist.name }}</h3>
+                        <p class="discover-artist-count">{{ artist.album_set.count }} Album{{ artist.album_set.count|pluralize }} &bull; {{ artist.song_set.count }} Song{{ artist.song_set.count|pluralize }}</p>
+                    </a>
+                    <div class="discover-artist-card-action">
+                        <button type="button"
+                                class="btn artist-follow-btn btn-sm {% if artist.id in followed_artist_ids %}following{% endif %}"
+                                data-artist-id="{{ artist.id }}"
+                                data-artist-name="{{ artist.name }}"
+                                aria-pressed="{% if artist.id in followed_artist_ids %}true{% else %}false{% endif %}"
+                                aria-label="{% if artist.id in followed_artist_ids %}Unfollow {{ artist.name }}{% else %}Follow {{ artist.name }}{% endif %}">
+                            <span class="follow-icon" aria-hidden="true">
+                                {% if artist.id in followed_artist_ids %}
+                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                                        <polyline points="20 6 9 17 4 12"></polyline>
+                                    </svg>
+                                {% else %}
+                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                                        <line x1="12" y1="5" x2="12" y2="19"></line>
+                                        <line x1="5" y1="12" x2="19" y2="12"></line>
+                                    </svg>
+                                {% endif %}
+                            </span>
+                            <span class="follow-text">{% if artist.id in followed_artist_ids %}Following{% else %}Follow{% endif %}</span>
+                        </button>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+        {% endif %}
+
+        <!-- ====================================================================
+             3. POPULAR & ESSENTIAL ALBUMS SECTION
+             ==================================================================== -->
+        {% if albums %}
+        <div class="search-results-group" style="margin-top: 2.5rem;">
+            <div class="search-group-header">
+                <div class="search-group-title-wrap">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" class="search-section-icon" aria-hidden="true">
+                        <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+                        <circle cx="12" cy="12" r="4"></circle>
+                    </svg>
+                    <h2 class="search-group-title">Popular & Essential Albums</h2>
+                </div>
+                <span class="search-count-pill">{{ albums|length }} Album{{ albums|length|pluralize }}</span>
+            </div>
+
+            <div class="search-albums-grid">
+                {% for album in albums %}
+                <a href="{% url 'album_detail' album.id %}" class="album-card search-card-item" aria-label="{{ album.title }} by {{ album.artist.name }}">
+                    <div class="album-cover-container">
+                        {% if album.cover_image %}
+                            <img src="{{ album.cover_image.url }}" alt="{{ album.title }}" class="album-cover-img" loading="lazy">
+                        {% else %}
+                            <img src="{% static 'music/images/album-midnight-vibes.svg' %}" alt="{{ album.title }}" class="album-cover-img" loading="lazy">
+                        {% endif %}
+                    </div>
+                    <div class="album-info">
+                        <h3 class="album-title">{{ album.title }}</h3>
+                        <p class="album-artist">{{ album.artist.name }}</p>
+                    </div>
+                </a>
+                {% endfor %}
+            </div>
+        </div>
+        {% endif %}
+
+        <!-- ====================================================================
+             4. FRESH TRACKS / DISCOVER SONGS SECTION
+             ==================================================================== -->
+        {% if songs %}
+        <div class="album-songs-container" style="margin-top: 2.5rem;">
+            <div class="album-songs-header">
+                <div class="search-group-title-wrap">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" class="search-section-icon" aria-hidden="true">
+                        <path d="M9 18V5l12-2v13"></path>
+                        <circle cx="6" cy="18" r="3"></circle>
+                        <circle cx="18" cy="16" r="3"></circle>
+                    </svg>
+                    <h2 class="album-songs-title">Discover Tracks</h2>
+                </div>
+                <div class="discover-songs-header-actions">
+                    <span class="album-songs-badge">{{ songs|length }} Track{{ songs|length|pluralize }}</span>
+                    <button class="btn btn-primary album-play-all-btn btn-sm" type="button" aria-label="Play All Discovered Tracks">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                            <polygon points="5 3 19 12 5 21 5 3"></polygon>
+                        </svg>
+                        <span>Play All</span>
+                    </button>
+                </div>
+            </div>
+
+            <div class="album-songs-list">
+                <form style="display:none;" aria-hidden="true">{% csrf_token %}</form>
+                {% for song in songs %}
+                <div class="song-list-item" tabindex="0" role="button" aria-label="Play {{ song.title }}">
+                    <div class="song-left-col">
+                        <span class="song-number">{{ forloop.counter }}</span>
+                        <button class="song-play-btn"
+                                type="button"
+                                aria-label="Play {{ song.title }}"
+                                {% if song.audio_file %}
+                                data-id="{{ song.id }}"
+                                data-audio="{{ song.audio_file.url }}"
+                                data-title="{{ song.title }}"
+                                data-artist="{{ song.artist.name }}"
+                                data-cover="{% if song.album and song.album.cover_image %}{{ song.album.cover_image.url }}{% elif song.artist and song.artist.image %}{{ song.artist.image.url }}{% else %}{% static 'music/images/album-midnight-vibes.svg' %}{% endif %}"
+                                data-album="{% if song.album %}{{ song.album.title }}{% else %}Single{% endif %}"
+                                data-index="{{ forloop.counter0 }}"
+                                {% else %}
+                                disabled style="opacity: 0.35; cursor: not-allowed;" title="No audio file available"
+                                {% endif %}>
+                            <svg class="icon-play" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                                <polygon points="6 4 20 12 6 20 6 4"></polygon>
+                            </svg>
+                            <svg class="icon-pause" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" style="display: none;">
+                                <rect x="6" y="4" width="4" height="16"></rect>
+                                <rect x="14" y="4" width="4" height="16"></rect>
+                            </svg>
+                        </button>
+                        <div class="song-thumbnail-wrapper" style="margin-right: 0.75rem;">
+                            {% if song.album and song.album.cover_image %}
+                                <img src="{{ song.album.cover_image.url }}" alt="{{ song.title }}" class="song-row-thumb" style="width: 36px; height: 36px; border-radius: 6px; object-fit: cover;" loading="lazy">
+                            {% elif song.artist and song.artist.image %}
+                                <img src="{{ song.artist.image.url }}" alt="{{ song.title }}" class="song-row-thumb" style="width: 36px; height: 36px; border-radius: 6px; object-fit: cover;" loading="lazy">
+                            {% else %}
+                                <img src="{% static 'music/images/album-midnight-vibes.svg' %}" alt="{{ song.title }}" class="song-row-thumb" style="width: 36px; height: 36px; border-radius: 6px; object-fit: cover;" loading="lazy">
+                            {% endif %}
+                        </div>
+                        <div class="song-info-text">
+                            <span class="song-title">{{ song.title }}</span>
+                            <span class="song-artist-sub">
+                                <a href="{% url 'artist_detail' song.artist.id %}" class="artist-sub-link" style="color: inherit; text-decoration: none;">
+                                    {{ song.artist.name }}
+                                </a>
+                                {% if song.album %}
+                                    &bull; <a href="{% url 'album_detail' song.album.id %}" class="album-sub-link" style="color: var(--text-muted); text-decoration: none;">{{ song.album.title }}</a>
+                                {% endif %}
+                            </span>
+                        </div>
+                    </div>
+
+                    <div class="song-right-col">
+                        <button type="button"
+                                class="song-like-btn {% if song.id in liked_song_ids %}liked{% endif %}"
+                                data-song-id="{{ song.id }}"
+                                data-song-title="{{ song.title }}"
+                                data-authenticated="{% if user.is_authenticated %}true{% else %}false{% endif %}"
+                                aria-label="{% if song.id in liked_song_ids %}Unlike {{ song.title }}{% else %}Like {{ song.title }}{% endif %}"
+                                title="{% if song.id in liked_song_ids %}Unlike {{ song.title }}{% else %}Like {{ song.title }}{% endif %}">
+                            <svg class="heart-icon-outline" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+                            </svg>
+                            <svg class="heart-icon-filled" viewBox="0 0 24 24" width="18" height="18" fill="currentColor" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+                            </svg>
+                        </button>
+                        <button type="button"
+                                class="song-add-playlist-btn"
+                                data-song-id="{{ song.id }}"
+                                data-song-title="{{ song.title }}"
+                                data-authenticated="{% if user.is_authenticated %}true{% else %}false{% endif %}"
+                                aria-label="Add {{ song.title }} to playlist"
+                                title="Add to playlist">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                <line x1="8" y1="6" x2="21" y2="6"></line>
+                                <line x1="8" y1="12" x2="21" y2="12"></line>
+                                <line x1="8" y1="18" x2="16" y2="18"></line>
+                                <line x1="19" y1="16" x2="19" y2="22"></line>
+                                <line x1="16" y1="19" x2="22" y2="19"></line>
+                            </svg>
+                        </button>
+                        <span class="song-status-icon" aria-hidden="true">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M9 18V5l12-2v13"></path>
+                                <circle cx="6" cy="18" r="3"></circle>
+                                <circle cx="18" cy="16" r="3"></circle>
+                            </svg>
+                        </span>
+                    </div>
+                </div>
+                {% empty %}
+                <div class="album-no-songs">
+                    <p class="no-songs-text">No tracks available in the library yet.</p>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+        {% endif %}
+
+        {% if not featured_album and not artists and not albums and not songs %}
+        <!-- Empty catalog state -->
+        <div class="search-empty-state">
+            <div class="search-empty-icon-wrap" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="12" cy="12" r="10"></circle>
+                    <line x1="12" y1="8" x2="12" y2="12"></line>
+                    <line x1="12" y1="16" x2="12.01" y2="16"></line>
+                </svg>
+            </div>
+            <h2 class="search-empty-title">Music Library Empty</h2>
+            <p class="search-empty-text">No music records are currently available in Haven's library.</p>
+            <div class="search-empty-actions">
+                <a href="{% url 'home' %}" class="btn btn-primary">Return Home</a>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+</section>
+{% endblock %}

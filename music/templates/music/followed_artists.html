@@ -1,0 +1,97 @@
+{% extends 'music/base.html' %}
+{% load static %}
+
+{% block title %}Followed Artists | Haven{% endblock %}
+
+{% block nav_home_active %}{% endblock %}
+
+{% block content %}
+<section class="followed-artists-section" id="followedArtistsSection">
+    <div class="container">
+        <!-- Back Navigation Bar -->
+        <div class="search-nav-bar">
+            <a href="{% url 'home' %}#featured-artists" class="search-back-btn" aria-label="Back to Featured Artists">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <line x1="19" y1="12" x2="5" y2="12"></line>
+                    <polyline points="12 19 5 12 12 5"></polyline>
+                </svg>
+                <span>Back to Artists</span>
+            </a>
+        </div>
+
+        <!-- Header Block -->
+        <div class="discover-header-block">
+            <div class="discover-header-info">
+                <span class="search-pill-badge">Your Collection</span>
+                <h1 class="discover-title">Followed Artists</h1>
+                <p class="discover-subtitle">
+                    Artists you follow to easily access their discography, albums, and songs in one place.
+                </p>
+            </div>
+            <div class="discover-stats-pills">
+                <span class="discover-stat-pill" id="followedCountBadge">{{ total_count }} Artist{{ total_count|pluralize }}</span>
+            </div>
+        </div>
+
+        <!-- Main Artists Grid -->
+        <div class="search-results-group" id="followedArtistsGroup" {% if not followed_list %}style="display: none;"{% endif %}>
+            <div class="search-artists-grid" id="followedArtistsGrid">
+                {% for item in followed_list %}
+                <div class="artist-card search-artist-card discover-artist-card" id="followedArtistCard_{{ item.artist.id }}" data-artist-id="{{ item.artist.id }}">
+                    <a href="{% url 'artist_detail' item.artist.id %}" class="discover-artist-avatar-link" aria-label="{{ item.artist.name }}">
+                        <div class="artist-avatar-wrapper">
+                            {% if item.artist.image %}
+                                <img src="{{ item.artist.image.url }}" alt="{{ item.artist.name }}" class="artist-avatar-img" loading="lazy">
+                            {% else %}
+                                <img src="{% static 'music/images/artist-arijit-singh.jpg' %}" alt="{{ item.artist.name }}" class="artist-avatar-img" loading="lazy">
+                            {% endif %}
+                        </div>
+                        <h3 class="artist-name">{{ item.artist.name }}</h3>
+                        <p class="discover-artist-count">{{ item.album_count }} Album{{ item.album_count|pluralize }} &bull; {{ item.song_count }} Song{{ item.song_count|pluralize }}</p>
+                    </a>
+                    <div class="discover-artist-card-action">
+                        <button type="button"
+                                class="btn artist-follow-btn following btn-sm"
+                                data-artist-id="{{ item.artist.id }}"
+                                data-artist-name="{{ item.artist.name }}"
+                                aria-pressed="true"
+                                aria-label="Unfollow {{ item.artist.name }}">
+                            <span class="follow-icon" aria-hidden="true">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                                    <polyline points="20 6 9 17 4 12"></polyline>
+                                </svg>
+                            </span>
+                            <span class="follow-text">Following</span>
+                        </button>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+
+        <!-- Empty State -->
+        <div class="search-empty-state" id="followedArtistsEmptyState" {% if followed_list %}style="display: none;"{% endif %}>
+            <div class="search-empty-icon-wrap" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                    <circle cx="9" cy="7" r="4"></circle>
+                    <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                    <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                </svg>
+            </div>
+            <h2 class="search-empty-title">You aren't following any artists yet</h2>
+            <p class="search-empty-text">
+                Follow your favorite artists to quickly browse their albums, tracks, and discography from this page.
+            </p>
+            <div class="search-empty-actions">
+                <a href="{% url 'discover' %}" class="btn btn-primary">
+                    Discover Music & Artists
+                </a>
+                <a href="{% url 'home' %}#featured-artists" class="btn btn-secondary">
+                    Browse Featured Artists
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

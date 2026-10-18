@@ -31,6 +31,7 @@
             <!-- Signup Form -->
             <form method="post" action="{% url 'signup' %}" class="auth-form" id="signupForm" autocomplete="on">
                 {% csrf_token %}
+                <input type="hidden" name="next" value="{{ next|default:'' }}">
 
                 <!-- Username Field -->
                 <div class="auth-field">
@@ -65,7 +66,7 @@
                             <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
                         </svg>
                         <input type="password" id="id_password" name="password" class="auth-input has-toggle" placeholder="Create a strong password" required autocomplete="new-password">
-                        <button type="button" class="auth-password-toggle" aria-label="Show password" data-toggle-target="id_password">
+                        <button type="button" class="auth-password-toggle" aria-label="Show password" title="Show password" data-toggle-target="id_password">
                             <svg class="eye-icon eye-open" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                                 <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
                                 <circle cx="12" cy="12" r="3"></circle>
@@ -87,7 +88,7 @@
                             <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
                         </svg>
                         <input type="password" id="id_confirm_password" name="confirm_password" class="auth-input has-toggle" placeholder="Confirm your password" required autocomplete="new-password">
-                        <button type="button" class="auth-password-toggle" aria-label="Show password" data-toggle-target="id_confirm_password">
+                        <button type="button" class="auth-password-toggle" aria-label="Show password" title="Show password" data-toggle-target="id_confirm_password">
                             <svg class="eye-icon eye-open" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                                 <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
                                 <circle cx="12" cy="12" r="3"></circle>
@@ -112,7 +113,7 @@
 
             <!-- Switch to Login -->
             <div class="auth-footer">
-                Already have an account? <a href="/login/" class="auth-footer-link">Log in</a>
+                Already have an account? <a href="/login/{% if next %}?next={{ next|urlencode }}{% endif %}" class="auth-footer-link">Log in</a>
             </div>
         </div>
     </div>
@@ -121,54 +122,11 @@
 
 {% block extra_js %}
 <script>
-    document.addEventListener('DOMContentLoaded', function () {
-        // Password visibility toggles
-        const toggleButtons = document.querySelectorAll('.auth-password-toggle');
-        toggleButtons.forEach(button => {
-            button.addEventListener('click', function () {
-                const targetId = this.getAttribute('data-toggle-target');
-                const targetInput = document.getElementById(targetId);
-                if (!targetInput) return;
-
-                const eyeOpen = this.querySelector('.eye-open');
-                const eyeClosed = this.querySelector('.eye-closed');
-
-                if (targetInput.type === 'password') {
-                    targetInput.type = 'text';
-                    this.setAttribute('aria-label', 'Hide password');
-                    if (eyeOpen) eyeOpen.style.display = 'none';
-                    if (eyeClosed) eyeClosed.style.display = 'block';
-                } else {
-                    targetInput.type = 'password';
-                    this.setAttribute('aria-label', 'Show password');
-                    if (eyeOpen) eyeOpen.style.display = 'block';
-                    if (eyeClosed) eyeClosed.style.display = 'none';
-                }
-            });
-        });
-
-        // Client-side password confirmation validation
-        const form = document.getElementById('signupForm');
-        const pass = document.getElementById('id_password');
-        const confirmPass = document.getElementById('id_confirm_password');
-
-        if (form && pass && confirmPass) {
-            form.addEventListener('submit', function (e) {
-                if (pass.value !== confirmPass.value) {
-                    e.preventDefault();
-                    confirmPass.setCustomValidity('Passwords do not match');
-                    confirmPass.reportValidity();
-                } else {
-                    confirmPass.setCustomValidity('');
-                }
-            });
-
-            confirmPass.addEventListener('input', function () {
-                if (pass.value === confirmPass.value) {
-                    confirmPass.setCustomValidity('');
-                }
-            });
-        }
-    });
+    if (typeof initPasswordToggles === 'function') {
+        initPasswordToggles();
+    }
+    if (typeof initSignupValidation === 'function') {
+        initSignupValidation();
+    }
 </script>
 {% endblock %}

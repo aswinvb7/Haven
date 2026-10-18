@@ -8,7 +8,7 @@ import posixpath
 import mimetypes
 from pathlib import Path
 
-from django.http import HttpResponse, StreamingHttpResponse, Http404, HttpResponseNotModified
+from django.http import HttpResponse, StreamingHttpResponse, Http404, HttpResponseNotModified, HttpResponseForbidden
 from django.utils.http import http_date, parse_http_date
 from django.utils._os import safe_join
 
@@ -33,6 +33,7 @@ def ranged_serve(request, path, document_root=None):
     """
     Serve static media files with full HTTP Byte-Range support (RFC 7233).
     Returns:
+      - 403 Forbidden if unauthenticated guest requests protected audio
       - 200 OK with 'Accept-Ranges: bytes' for standard requests
       - 206 Partial Content with 'Content-Range' for valid range requests
       - 416 Range Not Satisfiable for out-of-bounds requests
@@ -44,6 +45,23 @@ def ranged_serve(request, path, document_root=None):
 
     if not fullpath.exists() or fullpath.is_dir():
         raise Http404(f"Media file not found: {path}")
+
+    # Enforce authentication for protected audio files (songs) while keeping artwork public
+    AUDIO_EXTENSIONS = {'.mp3', '.wav', '.ogg', '.m4a', '.flac', '.aac', '.opus', '.wma', '.alac'}
+    content_type, encoding = mimetypes.guess_type(str(fullpath))
+    content_type = content_type or "application/octet-stream"
+
+    is_audio = (
+        clean_path.startswith('songs/') or
+        clean_path.startswith('songs\\') or
+        fullpath.suffix.lower() in AUDIO_EXTENSIONS or
+        content_type.startswith('audio/')
+    )
+
+    if is_audio:
+        user = getattr(request, 'user', None)
+        if not (user and user.is_authenticated):
+            return HttpResponseForbidden("Please log in to listen to music.")
 
     statobj = fullpath.stat()
     size = statobj.st_size

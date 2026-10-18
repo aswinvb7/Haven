@@ -1,0 +1,222 @@
+{% extends 'music/base.html' %}
+{% load static %}
+
+{% block title %}My Profile | Haven{% endblock %}
+
+{% block content %}
+<section class="profile-page-section" id="profilePageSection">
+    <div class="container">
+        <!-- Back Navigation Bar -->
+        <div class="profile-nav-bar">
+            <a href="{% url 'home' %}" class="profile-back-btn" aria-label="Back to Home">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <line x1="19" y1="12" x2="5" y2="12"></line>
+                    <polyline points="12 19 5 12 12 5"></polyline>
+                </svg>
+                <span>Back to Home</span>
+            </a>
+        </div>
+
+        <!-- Profile Card -->
+        <div class="profile-card">
+            <!-- Header Identity -->
+            <div class="profile-card-header">
+                <div class="profile-card-avatar" id="profilePageAvatarContainer" aria-hidden="true">
+                    {% if current_avatar_url %}
+                        <img src="{{ current_avatar_url }}" alt="{{ profile_user.username }}" class="profile-page-avatar-img" id="profilePageAvatarImg">
+                    {% else %}
+                        <img src="{% static 'music/images/avatars/default-avatar.png' %}" alt="{{ profile_user.username }}" class="profile-page-avatar-img" id="profilePageAvatarImg">
+                    {% endif %}
+                </div>
+                <div class="profile-card-identity">
+                    <span class="profile-badge">Haven Member</span>
+                    <h1 class="profile-username">{{ profile_user.username }}</h1>
+                    {% if profile_user.email %}
+                        <p class="profile-email">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+                                <polyline points="22,6 12,13 2,6"></polyline>
+                            </svg>
+                            <span>{{ profile_user.email }}</span>
+                        </p>
+                    {% endif %}
+                    {% if profile_user.date_joined %}
+                        <p class="profile-joined">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                                <line x1="16" y1="2" x2="16" y2="6"></line>
+                                <line x1="8" y1="2" x2="8" y2="6"></line>
+                                <line x1="3" y1="10" x2="21" y2="10"></line>
+                            </svg>
+                            <span>Member since {{ profile_user.date_joined|date:"F Y" }}</span>
+                        </p>
+                    {% endif %}
+                </div>
+            </div>
+
+            <!-- Profile Avatar Customization Section -->
+            <div class="profile-avatar-customization-section" id="profileAvatarSection">
+                <div class="avatar-section-header">
+                    <div>
+                        <h2 class="profile-section-title">Profile Avatar Customization</h2>
+                        <p class="profile-section-subtitle">Personalize your Haven presence with a built-in music avatar or upload your own image.</p>
+                    </div>
+                </div>
+
+                <!-- Live Feedback / Status Alert -->
+                <div class="avatar-feedback-alert" id="avatarFeedbackAlert" role="alert" style="display: none;"></div>
+
+                <!-- Customization Form -->
+                <form id="avatarCustomizationForm" action="{% url 'update_profile_avatar' %}" method="POST" enctype="multipart/form-data" class="avatar-customization-form">
+                    {% csrf_token %}
+                    <input type="hidden" name="avatar_preset" id="selectedAvatarPreset" value="{{ current_preset }}">
+                    <input type="hidden" name="action" id="avatarActionInput" value="">
+                    <input type="file" id="avatarFileInput" name="avatar_image" accept="image/jpeg,image/png,image/webp" style="display: none;" aria-label="Upload profile picture file">
+
+                    <!-- Actions Toolbar -->
+                    <div class="avatar-actions-bar">
+                        <button type="button" class="btn btn-secondary" id="uploadAvatarBtn">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                                <polyline points="17 8 12 3 7 8"></polyline>
+                                <line x1="12" y1="3" x2="12" y2="15"></line>
+                            </svg>
+                            <span>Upload from device</span>
+                        </button>
+
+                        <button type="button" class="btn btn-outline" id="resetDefaultAvatarBtn">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path>
+                                <path d="M3 3v5h5"></path>
+                            </svg>
+                            <span>Use Default Avatar</span>
+                        </button>
+
+                        <button type="submit" class="btn btn-primary" id="saveAvatarBtn">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                <polyline points="20 6 9 17 4 12"></polyline>
+                            </svg>
+                            <span id="saveAvatarBtnText">Save Changes</span>
+                        </button>
+                    </div>
+
+                    <div class="avatar-upload-info-note">
+                        <small>Supported formats: JPEG, PNG, WebP &bull; Maximum file size: 5 MB</small>
+                        <span id="stagedFileName" class="staged-file-badge" style="display: none;"></span>
+                    </div>
+
+                    <!-- Built-in Avatar Gallery Grid -->
+                    <div class="avatar-presets-container">
+                        <h3 class="avatar-presets-title">Choose from Haven Originals</h3>
+                        <div class="avatar-presets-grid" id="avatarPresetsGrid">
+                            {% for preset in avatar_presets %}
+                                <button type="button" 
+                                        class="avatar-preset-card {% if current_preset == preset.id and not has_custom_image %}is-selected{% endif %}" 
+                                        data-preset-id="{{ preset.id }}" 
+                                        data-preset-url="{{ preset.url }}" 
+                                        aria-label="Select {{ preset.name }} avatar" 
+                                        aria-pressed="{% if current_preset == preset.id and not has_custom_image %}true{% else %}false{% endif %}">
+                                    <div class="avatar-preset-thumb-wrapper">
+                                        <img src="{{ preset.url }}" alt="{{ preset.name }}" class="avatar-preset-img">
+                                        <div class="avatar-preset-check" aria-hidden="true">
+                                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                                                <polyline points="20 6 9 17 4 12"></polyline>
+                                            </svg>
+                                        </div>
+                                    </div>
+                                    <span class="avatar-preset-name">{{ preset.name }}</span>
+                                </button>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Stats Grid -->
+            <div class="profile-stats-grid">
+                <a href="{% url 'recently_played' %}" class="profile-stat-box" aria-label="View Recently Played History">
+                    <div class="profile-stat-icon stat-icon-history">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                            <circle cx="12" cy="12" r="10"></circle>
+                            <polyline points="12 6 12 12 16 14"></polyline>
+                        </svg>
+                    </div>
+                    <div class="profile-stat-content">
+                        <span class="profile-stat-value">{{ unique_played_count }}</span>
+                        <span class="profile-stat-label">Recently Played</span>
+                    </div>
+                </a>
+
+                <a href="{% url 'liked_songs' %}" class="profile-stat-box" aria-label="View Liked Songs">
+                    <div class="profile-stat-icon stat-icon-likes">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                            <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+                        </svg>
+                    </div>
+                    <div class="profile-stat-content">
+                        <span class="profile-stat-value">{{ liked_songs_count }}</span>
+                        <span class="profile-stat-label">Liked Songs</span>
+                    </div>
+                </a>
+
+                <a href="{% url 'playlist_list' %}" class="profile-stat-box" aria-label="View Playlists">
+                    <div class="profile-stat-icon stat-icon-playlists">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                            <path d="M9 18V5l12-2v13"></path>
+                            <circle cx="6" cy="18" r="3"></circle>
+                            <circle cx="18" cy="16" r="3"></circle>
+                        </svg>
+                    </div>
+                    <div class="profile-stat-content">
+                        <span class="profile-stat-value">{{ playlist_count }}</span>
+                        <span class="profile-stat-label">Playlists</span>
+                    </div>
+                </a>
+
+                <a href="{% url 'followed_artists' %}" class="profile-stat-box" aria-label="View Followed Artists">
+                    <div class="profile-stat-icon stat-icon-artists">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                            <path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                            <circle cx="8.5" cy="7" r="4"></circle>
+                            <polyline points="17 11 19 13 23 9"></polyline>
+                        </svg>
+                    </div>
+                    <div class="profile-stat-content">
+                        <span class="profile-stat-value">{{ followed_artists_count }}</span>
+                        <span class="profile-stat-label">Followed Artists</span>
+                    </div>
+                </a>
+            </div>
+
+            <!-- Library Shortcuts / Navigation Actions -->
+            <div class="profile-quick-actions">
+                <h2 class="profile-section-title">Music Navigation</h2>
+                <div class="profile-shortcuts-row">
+                    <a href="{% url 'discover' %}" class="btn btn-secondary">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                            <circle cx="12" cy="12" r="10"></circle>
+                            <polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"></polygon>
+                        </svg>
+                        <span>Discover Music</span>
+                    </a>
+                    <a href="{% url 'playlist_list' %}" class="btn btn-secondary">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                            <path d="M9 18V5l12-2v13"></path>
+                            <circle cx="6" cy="18" r="3"></circle>
+                            <circle cx="18" cy="16" r="3"></circle>
+                        </svg>
+                        <span>My Playlists</span>
+                    </a>
+                    <a href="{% url 'create_playlist' %}" class="btn btn-primary">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                            <line x1="12" y1="5" x2="12" y2="19"></line>
+                            <line x1="5" y1="12" x2="19" y2="12"></line>
+                        </svg>
+                        <span>New Playlist</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

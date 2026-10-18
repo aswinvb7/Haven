@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" width="100%" height="100%">
+  <defs>
+    <linearGradient id="bgGrad4" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#b45309" />
+      <stop offset="45%" stop-color="#ea580c" />
+      <stop offset="100%" stop-color="#f43f5e" />
+    </linearGradient>
+    <radialGradient id="glow4" cx="50%" cy="40%" r="55%">
+      <stop offset="0%" stop-color="#fef08a" stop-opacity="0.35" />
+      <stop offset="100%" stop-color="#fef08a" stop-opacity="0" />
+    </radialGradient>
+    <filter id="shadow4" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="6" stdDeviation="10" flood-color="#000000" flood-opacity="0.4" />
+    </filter>
+  </defs>
+  <rect width="400" height="400" rx="32" fill="url(#bgGrad4)" />
+  <circle cx="200" cy="180" r="130" fill="url(#glow4)" />
+  <g filter="url(#shadow4)">
+    <!-- Sunset Sun with Equalizer Rays -->
+    <circle cx="200" cy="180" r="50" fill="#ffffff" />
+    <!-- Radiating Bars -->
+    <rect x="130" y="260" width="14" height="45" rx="7" fill="#ffffff" />
+    <rect x="155" y="240" width="14" height="65" rx="7" fill="#ffffff" />
+    <rect x="180" y="220" width="14" height="85" rx="7" fill="#ffffff" />
+    <rect x="205" y="220" width="14" height="85" rx="7" fill="#ffffff" />
+    <rect x="230" y="240" width="14" height="65" rx="7" fill="#ffffff" />
+    <rect x="255" y="260" width="14" height="45" rx="7" fill="#ffffff" />
+    <!-- Horizon Line -->
+    <line x1="90" y1="320" x2="310" y2="320" stroke="#ffffff" stroke-opacity="0.6" stroke-width="3" stroke-linecap="round" />
+  </g>
+</svg>

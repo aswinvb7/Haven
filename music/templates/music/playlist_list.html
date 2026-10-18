@@ -1,0 +1,85 @@
+{% extends 'music/base.html' %}
+{% load static %}
+
+{% block title %}My Playlists - Haven{% endblock %}
+{% block nav_home_active %}{% endblock %}
+{% block nav_playlists_active %}active{% endblock %}
+
+{% block content %}
+<section class="playlists-page" id="playlistsSection">
+    <div class="container">
+        <!-- Playlists Page Header -->
+        <div class="playlists-header">
+            <div class="playlists-header-text">
+                <span class="playlists-kicker">Personal Library</span>
+                <h1 class="playlists-title">My Playlists</h1>
+                <p class="playlists-subtitle">Create and organize your favorite tracks into personalized collections.</p>
+            </div>
+            <div class="playlists-header-actions">
+                <a href="{% url 'create_playlist' %}" class="btn btn-primary create-playlist-btn" aria-label="Create new playlist">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <line x1="12" y1="5" x2="12" y2="19"></line>
+                        <line x1="5" y1="12" x2="19" y2="12"></line>
+                    </svg>
+                    <span>Create Playlist</span>
+                </a>
+            </div>
+        </div>
+
+        {% if playlists %}
+        <!-- Playlists Grid -->
+        <div class="playlists-grid" id="playlistsGrid">
+            {% for playlist in playlists %}
+            <a href="{% url 'playlist_detail' playlist.id %}" class="playlist-card" aria-label="View {{ playlist.name }} playlist">
+                <div class="playlist-card-cover-wrapper">
+                    <img src="{{ playlist.get_cover_url }}" alt="{{ playlist.name }} cover" class="playlist-card-cover-img" loading="lazy">
+                    <div class="playlist-card-overlay" aria-hidden="true">
+                        <div class="playlist-card-play-icon">
+                            <svg viewBox="0 0 24 24" fill="currentColor" width="22" height="22">
+                                <polygon points="6 4 20 12 6 20 6 4"></polygon>
+                            </svg>
+                        </div>
+                    </div>
+                </div>
+                <div class="playlist-card-content">
+                    <h2 class="playlist-card-title" title="{{ playlist.name }}">{{ playlist.name }}</h2>
+                    <p class="playlist-card-meta">
+                        <span class="playlist-track-count">{{ playlist.song_count }} track{{ playlist.song_count|pluralize }}</span>
+                        {% if playlist.description %}
+                        <span class="meta-dot" aria-hidden="true">&bull;</span>
+                        <span class="playlist-desc-snippet">{{ playlist.description|truncatewords:6 }}</span>
+                        {% endif %}
+                    </p>
+                </div>
+            </a>
+            {% endfor %}
+        </div>
+        {% else %}
+        <!-- Friendly Empty State -->
+        <div class="playlists-empty-state" id="playlistsEmptyState">
+            <div class="empty-state-icon-box" aria-hidden="true">
+                <svg viewBox="0 0 24 24" width="56" height="56" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="8" y1="6" x2="21" y2="6"></line>
+                    <line x1="8" y1="12" x2="21" y2="12"></line>
+                    <line x1="8" y1="18" x2="21" y2="18"></line>
+                    <line x1="3" y1="6" x2="3.01" y2="6"></line>
+                    <line x1="3" y1="12" x2="3.01" y2="12"></line>
+                    <line x1="3" y1="18" x2="3.01" y2="18"></line>
+                </svg>
+            </div>
+            <h2 class="empty-state-title">No Playlists Yet</h2>
+            <p class="empty-state-text">Start building your personal Haven. Create your first playlist to collect the songs that match your mood, vibe, or daily rhythm.</p>
+            <div class="empty-state-actions">
+                <a href="{% url 'create_playlist' %}" class="btn btn-primary">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <line x1="12" y1="5" x2="12" y2="19"></line>
+                        <line x1="5" y1="12" x2="19" y2="12"></line>
+                    </svg>
+                    <span>Create Your First Playlist</span>
+                </a>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+</section>
+{% endblock %}

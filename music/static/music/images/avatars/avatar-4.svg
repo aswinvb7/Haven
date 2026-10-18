@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" width="120" height="120">
+  <defs>
+    <linearGradient id="bg-grad-4" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0284c7" />
+      <stop offset="50%" stop-color="#4f46e5" />
+      <stop offset="100%" stop-color="#9333ea" />
+    </linearGradient>
+    <radialGradient id="aura-4" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#38bdf8" stop-opacity="0.7" />
+      <stop offset="100%" stop-color="#9333ea" stop-opacity="0" />
+    </radialGradient>
+    <filter id="shadow-4" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="4" stdDeviation="4" flood-color="#000000" flood-opacity="0.4" />
+    </filter>
+  </defs>
+  <circle cx="60" cy="60" r="58" fill="url(#bg-grad-4)" />
+  <circle cx="60" cy="60" r="50" fill="url(#aura-4)" />
+  <circle cx="60" cy="60" r="55" fill="none" stroke="rgba(255,255,255,0.25)" stroke-width="2" />
+  <!-- Musical Treble Clef -->
+  <g filter="url(#shadow-4)" fill="none" stroke="#ffffff" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M 64 28 C 64 28 62 25 58 25 C 53 25 50 29 50 35 C 50 46 68 53 68 66 C 68 76 60 83 52 83 C 44 83 38 77 38 69 C 38 62 44 57 51 57 C 57 57 60 60 60 65 C 60 70 56 73 51 73" stroke-width="4" />
+    <path d="M 59 23 L 59 90 C 59 94 56 97 52 97 C 48 97 45 94 45 91 C 45 87 49 85 53 87" stroke-width="4" />
+  </g>
+</svg>

@@ -1,0 +1,44 @@
+{% load static %}
+<!-- ========================================================================
+     DELETE PLAYLIST CONFIRMATION MODAL
+     ======================================================================== -->
+<div class="playlist-modal-overlay delete-modal-overlay" id="deletePlaylistModalOverlay" style="display: none;" aria-hidden="true">
+    <div class="playlist-modal delete-modal-dialog" id="deletePlaylistModal" role="dialog" aria-modal="true" aria-labelledby="deletePlaylistModalTitle">
+        <!-- Close Button -->
+        <button type="button" class="playlist-modal-close" id="deleteModalCloseBtn" aria-label="Close dialog">
+            <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="18" y1="6" x2="6" y2="18"></line>
+                <line x1="6" y1="6" x2="18" y2="18"></line>
+            </svg>
+        </button>
+
+        <div class="delete-modal-content">
+            <div class="delete-modal-icon-badge" aria-hidden="true">
+                <svg viewBox="0 0 24 24" width="30" height="30" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="3 6 5 6 21 6"></polyline>
+                    <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+                    <line x1="10" y1="11" x2="10" y2="17"></line>
+                    <line x1="14" y1="11" x2="14" y2="17"></line>
+                </svg>
+            </div>
+            <h3 class="delete-modal-title" id="deletePlaylistModalTitle">Delete Playlist?</h3>
+            <p class="delete-modal-desc">
+                Are you sure you want to permanently delete <strong class="delete-playlist-name-highlight">"{{ playlist.name }}"</strong>? All track listings will be removed. This action cannot be undone.
+            </p>
+
+            <form method="POST" action="{% url 'delete_playlist' playlist.id %}" class="delete-playlist-form" id="deletePlaylistForm">
+                {% csrf_token %}
+                <div class="delete-modal-actions">
+                    <button type="button" class="btn btn-secondary btn-cancel-delete" id="btnCancelDeletePlaylist">Cancel</button>
+                    <button type="submit" class="btn btn-danger btn-confirm-delete" id="btnConfirmDeletePlaylist">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                            <polyline points="3 6 5 6 21 6"></polyline>
+                            <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+                        </svg>
+                        <span>Delete Playlist</span>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

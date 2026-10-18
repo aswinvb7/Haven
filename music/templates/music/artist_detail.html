@@ -36,18 +36,42 @@
                     <span>{{ albums|length }} Album{{ albums|length|pluralize }}</span>
                     <span class="meta-dot" aria-hidden="true">&bull;</span>
                     <span>{{ songs|length }} Track{{ songs|length|pluralize }}</span>
+                    <span class="meta-dot" aria-hidden="true">&bull;</span>
+                    <span id="artistFollowerCount">{{ follower_count }} Follower{{ follower_count|pluralize }}</span>
                 </div>
 
-                {% if songs %}
-                <div class="album-hero-actions" style="margin-top: 1.25rem;">
+                <div class="album-hero-actions" style="margin-top: 1.25rem; display: flex; align-items: center; gap: 0.75rem; flex-wrap: wrap;">
+                    {% if songs %}
                     <button class="btn btn-primary album-play-all-btn" type="button" aria-label="Play All Tracks">
                         <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
                             <polygon points="5 3 19 12 5 21 5 3"></polygon>
                         </svg>
                         <span>Play All Tracks</span>
                     </button>
+                    {% endif %}
+
+                    <button type="button"
+                            class="btn artist-follow-btn {% if is_following %}following{% endif %}"
+                            data-artist-id="{{ artist.id }}"
+                            data-artist-name="{{ artist.name }}"
+                            data-authenticated="{% if user.is_authenticated %}true{% else %}false{% endif %}"
+                            aria-pressed="{% if is_following %}true{% else %}false{% endif %}"
+                            aria-label="{% if is_following %}Unfollow {{ artist.name }}{% else %}Follow {{ artist.name }}{% endif %}">
+                        <span class="follow-icon" aria-hidden="true">
+                            {% if is_following %}
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+                                    <polyline points="20 6 9 17 4 12"></polyline>
+                                </svg>
+                            {% else %}
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+                                    <line x1="12" y1="5" x2="12" y2="19"></line>
+                                    <line x1="5" y1="12" x2="19" y2="12"></line>
+                                </svg>
+                            {% endif %}
+                        </span>
+                        <span class="follow-text">{% if is_following %}Following{% else %}Follow{% endif %}</span>
+                    </button>
                 </div>
-                {% endif %}
             </div>
         </div>
 
@@ -129,8 +153,23 @@
                         </div>
                     </div>
 
-                    <div class="song-right-col" aria-hidden="true">
-                        <span class="song-status-icon">
+                    <div class="song-right-col">
+                        <button type="button"
+                                class="song-add-playlist-btn"
+                                data-song-id="{{ song.id }}"
+                                data-song-title="{{ song.title }}"
+                                data-authenticated="{% if user.is_authenticated %}true{% else %}false{% endif %}"
+                                aria-label="Add {{ song.title }} to playlist"
+                                title="Add to playlist">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                <line x1="8" y1="6" x2="21" y2="6"></line>
+                                <line x1="8" y1="12" x2="21" y2="12"></line>
+                                <line x1="8" y1="18" x2="16" y2="18"></line>
+                                <line x1="19" y1="16" x2="19" y2="22"></line>
+                                <line x1="16" y1="19" x2="22" y2="19"></line>
+                            </svg>
+                        </button>
+                        <span class="song-status-icon" aria-hidden="true">
                             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                 <path d="M9 18V5l12-2v13"></path>
                                 <circle cx="6" cy="18" r="3"></circle>
@@ -156,208 +195,4 @@
         </div>
     </div>
 </section>
-
-<!-- ====================================================================
-     FIXED BOTTOM MINI MUSIC PLAYER
-     ==================================================================== -->
-<div class="mini-player" id="miniPlayer" aria-label="Music Player" role="region" style="display: none;">
-    <div class="container mini-player-container">
-        <!-- 1. Track Info (Artwork, Title, Artist) -->
-        <div class="mini-player-track" id="miniPlayerTrack" title="Open Now Playing">
-            <div class="mini-player-cover-wrap">
-                <img id="miniPlayerCover" src="{% if artist.image %}{{ artist.image.url }}{% else %}{% static 'music/images/album-midnight-vibes.svg' %}{% endif %}" alt="{{ artist.name }}" class="mini-player-cover">
-            </div>
-            <div class="mini-player-meta">
-                <span id="miniPlayerTitle" class="mini-player-title">Select a track</span>
-                <span id="miniPlayerArtist" class="mini-player-artist">{{ artist.name }}</span>
-            </div>
-        </div>
-
-        <!-- 2. Controls & Progress Bar -->
-        <div class="mini-player-controls-group">
-            <div class="mini-player-buttons">
-                <!-- Previous Button -->
-                <button type="button" class="player-btn mini-btn-prev" id="miniPrevBtn" aria-label="Previous Track" title="Previous Track">
-                    <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor">
-                        <polygon points="19 20 9 12 19 4 19 20"></polygon>
-                        <line x1="5" y1="19" x2="5" y2="5" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"></line>
-                    </svg>
-                </button>
-
-                <!-- Play/Pause Button -->
-                <button type="button" class="player-btn player-btn-main mini-btn-play" id="miniPlayBtn" aria-label="Play" title="Play">
-                    <svg class="icon-play" viewBox="0 0 24 24" width="20" height="20" fill="currentColor">
-                        <polygon points="7 4 19 12 7 20 7 4"></polygon>
-                    </svg>
-                    <svg class="icon-pause" viewBox="0 0 24 24" width="20" height="20" fill="currentColor" style="display: none;">
-                        <rect x="6" y="4" width="4" height="16"></rect>
-                        <rect x="14" y="4" width="4" height="16"></rect>
-                    </svg>
-                </button>
-
-                <!-- Next Button -->
-                <button type="button" class="player-btn mini-btn-next" id="miniNextBtn" aria-label="Next Track" title="Next Track">
-                    <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor">
-                        <polygon points="5 4 15 12 5 20 5 4"></polygon>
-                        <line x1="19" y1="5" x2="19" y2="19" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"></line>
-                    </svg>
-                </button>
-            </div>
-
-            <!-- Mini Progress / Seek Bar -->
-            <div class="mini-player-progress-row">
-                <span class="mini-time mini-time-current" id="miniCurrentTime">0:00</span>
-                <div class="mini-slider-container">
-                    <input type="range" class="mini-seek-slider" id="miniSeekSlider" min="0" max="100" value="0" step="0.1" aria-label="Playback progress">
-                </div>
-                <span class="mini-time mini-time-total" id="miniTotalTime">0:00</span>
-            </div>
-        </div>
-
-        <!-- 3. Volume Control -->
-        <div class="mini-player-volume">
-            <button type="button" class="player-btn mini-btn-volume" id="miniVolumeBtn" aria-label="Mute / Unmute" title="Mute / Unmute">
-                <!-- Volume High Icon -->
-                <svg class="vol-icon vol-icon-high" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5" fill="currentColor"></polygon>
-                    <path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"></path>
-                </svg>
-                <!-- Volume Muted Icon -->
-                <svg class="vol-icon vol-icon-muted" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display: none;">
-                    <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5" fill="currentColor"></polygon>
-                    <line x1="23" y1="9" x2="17" y2="15"></line>
-                    <line x1="17" y1="9" x2="23" y2="15"></line>
-                </svg>
-            </button>
-            <div class="volume-slider-container">
-                <input type="range" class="mini-volume-slider" id="miniVolumeSlider" min="0" max="1" step="0.01" value="1" aria-label="Volume">
-            </div>
-        </div>
-    </div>
-</div>
-
-<!-- ====================================================================
-     FULL-SCREEN "NOW PLAYING" OVERLAY
-     ==================================================================== -->
-<div class="fullscreen-player" id="fullscreenPlayer" aria-hidden="true" role="dialog" aria-modal="true" aria-label="Now Playing">
-    <!-- Ambient blurred backdrop -->
-    <div class="fs-ambient-glow" id="fsAmbientGlow" aria-hidden="true"></div>
-
-    <div class="fs-player-inner">
-        <!-- Top Navigation -->
-        <header class="fs-top-bar">
-            <button type="button" class="fs-btn-close" id="fsCloseBtn" aria-label="Close Now Playing" title="Close">
-                <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                    <polyline points="6 9 12 15 18 9"></polyline>
-                </svg>
-            </button>
-            <div class="fs-header-title">
-                <span class="fs-header-eyebrow">Playing From</span>
-                <span class="fs-header-album">{{ artist.name }}</span>
-            </div>
-            <div class="fs-top-spacer" aria-hidden="true"></div>
-        </header>
-
-        <!-- Main Body -->
-        <main class="fs-main-content">
-            <!-- Large Artwork -->
-            <div class="fs-artwork-card">
-                <img id="fsArtwork" src="{% if artist.image %}{{ artist.image.url }}{% else %}{% static 'music/images/album-midnight-vibes.svg' %}{% endif %}" alt="{{ artist.name }}" class="fs-artwork-img">
-            </div>
-
-            <!-- Metadata -->
-            <div class="fs-metadata">
-                <h1 class="fs-track-title" id="fsSongTitle">Select a track</h1>
-                <p class="fs-artist-name" id="fsArtistName">{{ artist.name }}</p>
-            </div>
-
-            <!-- Scrubbing Bar -->
-            <div class="fs-scrubber-group">
-                <div class="fs-slider-wrap">
-                    <input type="range" class="fs-seek-slider" id="fsSeekSlider" min="0" max="100" value="0" step="0.1" aria-label="Seek track">
-                </div>
-                <div class="fs-time-row">
-                    <span class="fs-time fs-time-current" id="fsCurrentTime">0:00</span>
-                    <span class="fs-time fs-time-total" id="fsTotalTime">0:00</span>
-                </div>
-            </div>
-
-            <!-- Playback Controls -->
-            <div class="fs-controls-wrap">
-                <div class="fs-ctrl-row">
-                    <!-- Shuffle Button -->
-                    <button type="button" class="fs-ctrl-btn fs-btn-shuffle" id="fsShuffleBtn" aria-label="Toggle Shuffle" title="Shuffle: Off">
-                        <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <polyline points="16 3 21 3 21 8"></polyline>
-                            <line x1="4" y1="20" x2="21" y2="3"></line>
-                            <polyline points="21 16 21 21 16 21"></polyline>
-                            <line x1="15" y1="15" x2="21" y2="21"></line>
-                            <line x1="4" y1="4" x2="9" y2="9"></line>
-                        </svg>
-                        <span class="fs-shuffle-dot" aria-hidden="true"></span>
-                    </button>
-
-                    <!-- Previous Button -->
-                    <button type="button" class="fs-ctrl-btn fs-btn-prev" id="fsPrevBtn" aria-label="Previous Track" title="Previous Track">
-                        <svg viewBox="0 0 24 24" width="24" height="24" fill="currentColor">
-                            <polygon points="19 20 9 12 19 4 19 20"></polygon>
-                            <line x1="5" y1="19" x2="5" y2="5" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"></line>
-                        </svg>
-                    </button>
-
-                    <!-- Play/Pause Button -->
-                    <button type="button" class="fs-ctrl-btn fs-btn-play" id="fsPlayBtn" aria-label="Play" title="Play">
-                        <svg class="fs-icon-play icon-play" viewBox="0 0 24 24" width="28" height="28" fill="currentColor">
-                            <polygon points="7 4 19 12 7 20 7 4"></polygon>
-                        </svg>
-                        <svg class="fs-icon-pause icon-pause" viewBox="0 0 24 24" width="28" height="28" fill="currentColor" style="display: none;">
-                            <rect x="6" y="4" width="4" height="16"></rect>
-                            <rect x="14" y="4" width="4" height="16"></rect>
-                        </svg>
-                    </button>
-
-                    <!-- Next Button -->
-                    <button type="button" class="fs-ctrl-btn fs-btn-next" id="fsNextBtn" aria-label="Next Track" title="Next Track">
-                        <svg viewBox="0 0 24 24" width="24" height="24" fill="currentColor">
-                            <polygon points="5 4 15 12 5 20 5 4"></polygon>
-                            <line x1="19" y1="5" x2="19" y2="19" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"></line>
-                        </svg>
-                    </button>
-
-                    <!-- Repeat Button -->
-                    <button type="button" class="fs-ctrl-btn fs-btn-repeat" id="fsRepeatBtn" aria-label="Toggle Repeat" title="Repeat: Off">
-                        <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <polyline points="17 1 21 5 17 9"></polyline>
-                            <path d="M3 11V9a4 4 0 0 1 4-4h14"></path>
-                            <polyline points="7 23 3 19 7 15"></polyline>
-                            <path d="M21 13v2a4 4 0 0 1-4 4H3"></path>
-                        </svg>
-                        <span class="fs-repeat-badge" id="fsRepeatBadge">1</span>
-                        <span class="fs-repeat-dot" aria-hidden="true"></span>
-                    </button>
-                </div>
-
-                <!-- Volume Control -->
-                <div class="fs-volume-wrap">
-                    <button type="button" class="fs-volume-btn" id="fsVolumeBtn" aria-label="Mute / Unmute" title="Mute / Unmute">
-                        <!-- Volume High -->
-                        <svg class="fs-vol-icon fs-vol-high" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5" fill="currentColor"></polygon>
-                            <path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"></path>
-                        </svg>
-                        <!-- Volume Mute -->
-                        <svg class="fs-vol-icon fs-vol-muted" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display: none;">
-                            <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5" fill="currentColor"></polygon>
-                            <line x1="23" y1="9" x2="17" y2="15"></line>
-                            <line x1="17" y1="9" x2="23" y2="15"></line>
-                        </svg>
-                    </button>
-                    <div class="fs-volume-slider-container">
-                        <input type="range" class="fs-volume-slider" id="fsVolumeSlider" min="0" max="1" step="0.01" value="1" aria-label="Full-screen volume">
-                    </div>
-                </div>
-            </div>
-        </main>
-    </div>
-</div>
 {% endblock %}

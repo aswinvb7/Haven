@@ -1,0 +1,74 @@
+{% load static %}
+<!-- ========================================================================
+     ADD TO PLAYLIST MODAL
+     ======================================================================== -->
+<div class="playlist-modal-overlay" id="addToPlaylistModalOverlay" style="display: none;" aria-hidden="true">
+    <div class="playlist-modal" id="addToPlaylistModal" role="dialog" aria-modal="true" aria-labelledby="playlistModalTitle">
+        <!-- Modal Header -->
+        <div class="playlist-modal-header">
+            <div class="playlist-modal-title-group">
+                <span class="playlist-modal-kicker">My Collection</span>
+                <h3 class="playlist-modal-title" id="playlistModalTitle">Add to Playlist</h3>
+                <p class="playlist-modal-subtitle">
+                    Select a playlist for <span class="highlight-song" id="playlistModalSongTitle">Song</span>
+                </p>
+            </div>
+            <button type="button" class="playlist-modal-close" id="playlistModalCloseBtn" aria-label="Close modal">
+                <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="18" y1="6" x2="6" y2="18"></line>
+                    <line x1="6" y1="6" x2="18" y2="18"></line>
+                </svg>
+            </button>
+        </div>
+
+        <!-- Modal Body -->
+        <div class="playlist-modal-body">
+            <!-- Loading Spinner -->
+            <div class="playlist-modal-loading" id="playlistModalLoading">
+                <div class="playlist-spinner" aria-label="Loading playlists..."></div>
+                <span>Loading your playlists...</span>
+            </div>
+
+            <!-- Playlists List -->
+            <div class="playlist-modal-list" id="playlistModalList" style="display: none;"></div>
+
+            <!-- Empty State -->
+            <div class="playlist-modal-empty" id="playlistModalEmpty" style="display: none;">
+                <div class="empty-icon-box" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" width="36" height="36" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="8" y1="6" x2="21" y2="6"></line>
+                        <line x1="8" y1="12" x2="21" y2="12"></line>
+                        <line x1="8" y1="18" x2="21" y2="18"></line>
+                        <line x1="3" y1="6" x2="3.01" y2="6"></line>
+                        <line x1="3" y1="12" x2="3.01" y2="12"></line>
+                        <line x1="3" y1="18" x2="3.01" y2="18"></line>
+                    </svg>
+                </div>
+                <h4>No Playlists Found</h4>
+                <p>You haven't created any playlists yet. Start by creating one!</p>
+                <a href="{% url 'create_playlist' %}" class="btn btn-primary btn-sm modal-create-playlist-btn">
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <line x1="12" y1="5" x2="12" y2="19"></line>
+                        <line x1="5" y1="12" x2="19" y2="12"></line>
+                    </svg>
+                    <span>Create New Playlist</span>
+                </a>
+            </div>
+        </div>
+
+        <!-- Modal Footer -->
+        <div class="playlist-modal-footer">
+            <a href="{% url 'create_playlist' %}" class="playlist-modal-create-link" id="playlistModalNewLink">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <circle cx="12" cy="12" r="10"></circle>
+                    <line x1="12" y1="8" x2="12" y2="16"></line>
+                    <line x1="8" y1="12" x2="16" y2="12"></line>
+                </svg>
+                <span>Create a new playlist</span>
+            </a>
+        </div>
+    </div>
+</div>
+
+<!-- Global Toast Notification Container -->
+<div class="playlist-toast-container" id="playlistToastContainer" aria-live="polite" aria-atomic="true"></div>

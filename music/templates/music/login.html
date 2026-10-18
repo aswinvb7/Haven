@@ -37,8 +37,9 @@
             {% endif %}
 
             <!-- Login Form -->
-            <form method="post" action="/login/" class="auth-form" id="loginForm" autocomplete="on">
+            <form method="post" action="" class="auth-form" id="loginForm" autocomplete="on">
                 {% csrf_token %}
+                <input type="hidden" name="next" value="{{ next|default:'' }}">
 
                 <!-- Username Field -->
                 <div class="auth-field">
@@ -61,7 +62,7 @@
                             <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
                         </svg>
                         <input type="password" id="id_password" name="password" class="auth-input has-toggle" placeholder="Enter your password" required autocomplete="current-password">
-                        <button type="button" class="auth-password-toggle" aria-label="Show password" data-toggle-target="id_password">
+                        <button type="button" class="auth-password-toggle" aria-label="Show password" title="Show password" data-toggle-target="id_password">
                             <svg class="eye-icon eye-open" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                                 <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
                                 <circle cx="12" cy="12" r="3"></circle>
@@ -86,7 +87,7 @@
 
             <!-- Switch to Sign Up -->
             <div class="auth-footer">
-                Don't have an account? <a href="/signup/" class="auth-footer-link">Sign Up</a>
+                Don't have an account? <a href="/signup/{% if next %}?next={{ next|urlencode }}{% endif %}" class="auth-footer-link">Sign Up</a>
             </div>
         </div>
     </div>
@@ -95,31 +96,8 @@
 
 {% block extra_js %}
 <script>
-    document.addEventListener('DOMContentLoaded', function () {
-        // Password visibility toggle
-        const toggleButtons = document.querySelectorAll('.auth-password-toggle');
-        toggleButtons.forEach(button => {
-            button.addEventListener('click', function () {
-                const targetId = this.getAttribute('data-toggle-target');
-                const targetInput = document.getElementById(targetId);
-                if (!targetInput) return;
-
-                const eyeOpen = this.querySelector('.eye-open');
-                const eyeClosed = this.querySelector('.eye-closed');
-
-                if (targetInput.type === 'password') {
-                    targetInput.type = 'text';
-                    this.setAttribute('aria-label', 'Hide password');
-                    if (eyeOpen) eyeOpen.style.display = 'none';
-                    if (eyeClosed) eyeClosed.style.display = 'block';
-                } else {
-                    targetInput.type = 'password';
-                    this.setAttribute('aria-label', 'Show password');
-                    if (eyeOpen) eyeOpen.style.display = 'block';
-                    if (eyeClosed) eyeClosed.style.display = 'none';
-                }
-            });
-        });
-    });
+    if (typeof initPasswordToggles === 'function') {
+        initPasswordToggles();
+    }
 </script>
 {% endblock %}

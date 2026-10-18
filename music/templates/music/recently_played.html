@@ -1,0 +1,186 @@
+{% extends 'music/base.html' %}
+{% load static %}
+
+{% block title %}Recently Played - Haven{% endblock %}
+{% block nav_home_active %}{% endblock %}
+{% block nav_history_active %}active{% endblock %}
+
+{% block content %}
+<section class="album-detail-page recently-played-page" id="recentlyPlayedSection">
+    <div class="container">
+        <!-- Recently Played Hero Banner -->
+        <div class="album-hero-card history-hero-card">
+            <div class="album-hero-cover-wrapper history-hero-cover-wrapper">
+                <div class="history-hero-gradient-box" aria-hidden="true">
+                    <svg class="history-hero-clock-icon" viewBox="0 0 24 24" width="76" height="76" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="10"></circle>
+                        <polyline points="12 6 12 12 16 14"></polyline>
+                    </svg>
+                </div>
+            </div>
+
+            <div class="album-hero-info">
+                <span class="album-type-badge history-badge">Listening History</span>
+                <h1 class="album-hero-title">Recently Played</h1>
+                <div class="album-hero-meta">
+                    <span class="album-hero-artist"><span class="meta-label">Curated for:</span> {{ user.username }}</span>
+                    <span class="meta-dot" aria-hidden="true">&bull;</span>
+                    <span class="album-hero-stats history-hero-stats" id="historySongsCountText">{{ songs|length }} Track{{ songs|length|pluralize }}</span>
+                </div>
+
+                {% if songs %}
+                <div class="album-hero-actions" id="historyHeroActions">
+                    <button class="btn btn-primary album-play-all-btn" type="button" aria-label="Play Recently Played Tracks">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                            <polygon points="5 3 19 12 5 21 5 3"></polygon>
+                        </svg>
+                        <span>Play All</span>
+                    </button>
+                    <form method="post" action="{% url 'clear_history' %}" id="clearHistoryForm" style="display: inline-block;">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-secondary history-clear-btn" id="clearHistoryBtn" aria-label="Clear listening history" onclick="return confirm('Are you sure you want to clear your entire listening history?');">
+                            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                <polyline points="3 6 5 6 21 6"></polyline>
+                                <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+                            </svg>
+                            <span>Clear History</span>
+                        </button>
+                    </form>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+
+        <!-- Songs Section -->
+        <div class="album-songs-container">
+            <div class="album-songs-header">
+                <h2 class="album-songs-title">Tracks</h2>
+                <span class="album-songs-badge history-songs-badge" id="historySongsBadge" {% if not songs %}style="display: none;"{% endif %}>
+                    {{ songs|length }} Track{{ songs|length|pluralize }}
+                </span>
+            </div>
+
+            <div class="album-songs-list" id="historySongsList">
+                <form style="display:none;">{% csrf_token %}</form>
+                {% for song in songs %}
+                <div class="song-list-item" tabindex="0" role="button" aria-label="Play {{ song.title }}" data-song-id="{{ song.id }}">
+                    <div class="song-left-col">
+                        <span class="song-number">{{ forloop.counter }}</span>
+                        <button class="song-play-btn" type="button" aria-label="Play {{ song.title }}"
+                                {% if song.audio_file %}
+                                data-audio="{{ song.audio_file.url }}"
+                                data-song-id="{{ song.id }}"
+                                data-title="{{ song.title }}"
+                                data-artist="{{ song.artist.name }}"
+                                data-cover="{% if song.album and song.album.cover_image %}{{ song.album.cover_image.url }}{% elif song.artist and song.artist.image %}{{ song.artist.image.url }}{% else %}{% static 'music/images/album-midnight-vibes.svg' %}{% endif %}"
+                                data-album="{% if song.album %}{{ song.album.title }}{% else %}Haven Stream{% endif %}"
+                                data-index="{{ forloop.counter0 }}"
+                                {% else %}
+                                disabled style="opacity: 0.35; cursor: not-allowed;" title="No audio file available"
+                                {% endif %}>
+                            <svg class="icon-play" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                                <polygon points="6 4 20 12 6 20 6 4"></polygon>
+                            </svg>
+                            <svg class="icon-pause" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" style="display: none;">
+                                <rect x="6" y="4" width="4" height="16"></rect>
+                                <rect x="14" y="4" width="4" height="16"></rect>
+                            </svg>
+                        </button>
+                        <div class="song-cover-thumb-wrapper">
+                            {% if song.album and song.album.cover_image %}
+                                <img src="{{ song.album.cover_image.url }}" alt="{{ song.title }} Art" class="song-cover-thumb" loading="lazy">
+                            {% elif song.artist and song.artist.image %}
+                                <img src="{{ song.artist.image.url }}" alt="{{ song.title }} Art" class="song-cover-thumb" loading="lazy">
+                            {% else %}
+                                <img src="{% static 'music/images/album-midnight-vibes.svg' %}" alt="{{ song.title }} Art" class="song-cover-thumb" loading="lazy">
+                            {% endif %}
+                        </div>
+                        <div class="song-info-text">
+                            <span class="song-title">{{ song.title }}</span>
+                            <span class="song-artist-sub">{{ song.artist.name }}</span>
+                        </div>
+                    </div>
+
+                    <div class="song-middle-col" style="display: flex; align-items: center; gap: 1rem; color: var(--text-muted); font-size: 0.85rem;">
+                        {% if song.album %}
+                        <a href="{% url 'album_detail' song.album.id %}" class="song-album-link" style="color: var(--text-secondary); text-decoration: none;">
+                            {{ song.album.title }}
+                        </a>
+                        {% endif %}
+                        {% if song.last_played_at %}
+                        <span class="song-played-at" style="color: var(--text-muted); font-size: 0.8rem;">
+                            {{ song.last_played_at|timesince }} ago
+                        </span>
+                        {% endif %}
+                    </div>
+
+                    <div class="song-right-col">
+                        <button type="button"
+                                class="song-like-btn {% if song.id in liked_song_ids %}liked{% endif %}"
+                                data-song-id="{{ song.id }}"
+                                data-song-title="{{ song.title }}"
+                                data-authenticated="true"
+                                aria-label="{% if song.id in liked_song_ids %}Unlike {{ song.title }}{% else %}Like {{ song.title }}{% endif %}"
+                                title="{% if song.id in liked_song_ids %}Unlike{% else %}Like{% endif %}">
+                            <svg class="icon-heart" viewBox="0 0 24 24" fill="{% if song.id in liked_song_ids %}currentColor{% else %}none{% endif %}" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+                            </svg>
+                        </button>
+                        <button type="button"
+                                class="song-add-playlist-btn"
+                                data-song-id="{{ song.id }}"
+                                data-song-title="{{ song.title }}"
+                                aria-label="Add {{ song.title }} to playlist"
+                                title="Add to playlist">
+                            <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                <line x1="12" y1="5" x2="12" y2="19"></line>
+                                <line x1="5" y1="12" x2="19" y2="12"></line>
+                            </svg>
+                        </button>
+                        <button type="button"
+                                class="song-remove-history-btn"
+                                data-song-id="{{ song.id }}"
+                                data-song-title="{{ song.title }}"
+                                aria-label="Remove {{ song.title }} from listening history"
+                                title="Remove from history">
+                            <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                <polyline points="3 6 5 6 21 6"></polyline>
+                                <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+                                <line x1="10" y1="11" x2="10" y2="17"></line>
+                                <line x1="14" y1="11" x2="14" y2="17"></line>
+                            </svg>
+                        </button>
+                        <span class="song-status-icon" aria-hidden="true">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M9 18V5l12-2v13"></path>
+                                <circle cx="6" cy="18" r="3"></circle>
+                                <circle cx="18" cy="16" r="3"></circle>
+                            </svg>
+                        </span>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+
+            <!-- Empty State -->
+            <div class="album-no-songs history-empty-state" id="historyEmptyState" {% if songs %}style="display: none;"{% endif %}>
+                <div class="empty-songs-icon" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="10"></circle>
+                        <polyline points="12 6 12 12 16 14"></polyline>
+                    </svg>
+                </div>
+                <h3 class="history-empty-title">No Listening History Yet</h3>
+                <p class="no-songs-text history-empty-sub">Songs you play while signed in will automatically appear here so you can easily replay your favorites.</p>
+                <a href="{% url 'home' %}#popular-albums" class="btn btn-primary history-empty-btn">
+                    <span>Explore Music</span>
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <line x1="5" y1="12" x2="19" y2="12"></line>
+                        <polyline points="12 5 19 12 12 19"></polyline>
+                    </svg>
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

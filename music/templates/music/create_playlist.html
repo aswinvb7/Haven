@@ -1,0 +1,174 @@
+{% extends 'music/base.html' %}
+{% load static %}
+
+{% block title %}Create Playlist - Haven{% endblock %}
+{% block nav_home_active %}{% endblock %}
+{% block nav_playlists_active %}active{% endblock %}
+
+{% block content %}
+<section class="create-playlist-page" id="createPlaylistSection">
+    <div class="container create-playlist-container">
+        <!-- Back Navigation -->
+        <a href="{% url 'playlist_list' %}" class="playlist-back-link" aria-label="Back to playlists">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <line x1="19" y1="12" x2="5" y2="12"></line>
+                <polyline points="12 19 5 12 12 5"></polyline>
+            </svg>
+            <span>Back to My Playlists</span>
+        </a>
+
+        <!-- Form Card Container -->
+        <div class="create-playlist-card">
+            <div class="create-playlist-card-header">
+                <span class="playlists-kicker">New Collection</span>
+                <h1 class="create-playlist-title">Create Playlist</h1>
+                <p class="create-playlist-subtitle">Give your playlist an expressive name, choose a vibrant cover, and make it your own.</p>
+            </div>
+
+            {% if pending_song %}
+            <!-- Pending Song Indicator (from Add to Playlist flow) -->
+            <div class="pending-song-banner" id="pendingSongBanner">
+                <div class="pending-song-icon" aria-hidden="true">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M9 18V5l12-2v13"></path>
+                        <circle cx="6" cy="18" r="3"></circle>
+                        <circle cx="18" cy="16" r="3"></circle>
+                    </svg>
+                </div>
+                <div class="pending-song-details">
+                    <span class="pending-song-label">Initial Track to Add</span>
+                    <span class="pending-song-title"><strong>{{ pending_song.title }}</strong> &bull; {{ pending_song.artist.name }}</span>
+                </div>
+                <div class="pending-song-badge">1st Track</div>
+            </div>
+            {% endif %}
+
+            {% if error %}
+            <div class="form-alert-error" role="alert">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <circle cx="12" cy="12" r="10"></circle>
+                    <line x1="12" y1="8" x2="12" y2="12"></line>
+                    <line x1="12" y1="16" x2="12.01" y2="16"></line>
+                </svg>
+                <span>{{ error }}</span>
+            </div>
+            {% endif %}
+
+            <form method="POST" action="{% url 'create_playlist' %}{% if pending_song %}?song_id={{ pending_song.id }}{% endif %}" enctype="multipart/form-data" class="create-playlist-form" id="createPlaylistForm">
+                {% csrf_token %}
+                {% if pending_song %}
+                <input type="hidden" name="song_id" value="{{ pending_song.id }}" id="pendingSongIdInput">
+                {% endif %}
+
+                <!-- Field 1: Playlist Name (Required, Emoji & Unicode supported) -->
+                <div class="form-group">
+                    <label for="playlistNameInput" class="form-label">
+                        Playlist Name <span class="required-asterisk">*</span>
+                    </label>
+                    <input type="text"
+                           id="playlistNameInput"
+                           name="name"
+                           value="{{ name_value|default:'' }}"
+                           required
+                           maxlength="200"
+                           class="form-control-input"
+                           placeholder="e.g. Night Drive 🌃, Chill Lo-Fi ☕, Deep Focus 🎧"
+                           autocomplete="off"
+                           autofocus>
+                    <span class="form-help-text">Emojis and international Unicode characters are fully supported.</span>
+                </div>
+
+                <!-- Field 2: Description (Optional) -->
+                <div class="form-group">
+                    <label for="playlistDescInput" class="form-label">
+                        Description <span class="optional-badge">Optional</span>
+                    </label>
+                    <textarea id="playlistDescInput"
+                              name="description"
+                              rows="3"
+                              class="form-control-textarea"
+                              placeholder="Describe the mood, vibe, or genres of this playlist...">{{ desc_value|default:'' }}</textarea>
+                </div>
+
+                <!-- Field 3: Preset Cover Artwork Gallery -->
+                <div class="form-group">
+                    <label class="form-label">Choose Cover Artwork</label>
+                    <p class="form-help-text" style="margin-bottom: 0.85rem;">Select from our curated designer artwork presets:</p>
+                    <div class="preset-gallery-grid" role="radiogroup" aria-label="Preset cover options">
+                        {% for preset in presets %}
+                        <label class="preset-option-card {% if preset.id == default_preset %}selected{% endif %}" id="presetLabel_{{ preset.id }}">
+                            <input type="radio"
+                                   name="preset_cover"
+                                   value="{{ preset.id }}"
+                                   class="preset-radio-input"
+                                   {% if preset.id == default_preset %}checked{% endif %}>
+                            <div class="preset-thumb-wrapper">
+                                <img src="{% static preset.file %}" alt="{{ preset.name }} preset" class="preset-thumb-img">
+                                <div class="preset-check-badge" aria-hidden="true">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                                        <polyline points="20 6 9 17 4 12"></polyline>
+                                    </svg>
+                                </div>
+                            </div>
+                            <span class="preset-name-label">{{ preset.name }}</span>
+                        </label>
+                        {% endfor %}
+                    </div>
+                </div>
+
+                <!-- Field 4: Custom Cover Image Upload (Optional) -->
+                <div class="form-group custom-cover-group">
+                    <label for="customCoverInput" class="form-label">
+                        Or Upload Custom Cover <span class="optional-badge">Optional</span>
+                    </label>
+                    <div class="custom-cover-uploader" id="customCoverUploader">
+                        <input type="file"
+                               id="customCoverInput"
+                               name="custom_cover"
+                               accept="image/png,image/jpeg,image/webp,image/svg+xml"
+                               class="custom-cover-file-input">
+                        <div class="uploader-idle-state" id="uploaderIdleState">
+                            <div class="uploader-icon-box" aria-hidden="true">
+                                <svg viewBox="0 0 24 24" width="32" height="32" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+                                    <circle cx="8.5" cy="8.5" r="1.5"></circle>
+                                    <polyline points="21 15 16 10 5 21"></polyline>
+                                </svg>
+                            </div>
+                            <div class="uploader-text">
+                                <span class="uploader-title">Choose an image file</span>
+                                <span class="uploader-meta">Square image recommended (JPG, PNG, WEBP). Overrides preset.</span>
+                            </div>
+                        </div>
+                        <div class="uploader-preview-state" id="uploaderPreviewState" style="display: none;">
+                            <img src="" alt="Custom cover preview" class="uploader-preview-img" id="uploaderPreviewImg">
+                            <div class="uploader-preview-info">
+                                <span class="uploader-filename" id="uploaderFileName">filename.jpg</span>
+                                <button type="button" class="btn-clear-file" id="btnClearCustomCover">Change / Remove</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Form Submit and Cancel Buttons -->
+                <div class="form-actions-row">
+                    <button type="submit" class="btn btn-primary btn-create-submit" id="submitCreatePlaylistBtn">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                            <line x1="12" y1="5" x2="12" y2="19"></line>
+                            <line x1="5" y1="12" x2="19" y2="12"></line>
+                        </svg>
+                        <span>Create Playlist</span>
+                    </button>
+                    <a href="{% url 'playlist_list' %}" class="btn btn-secondary btn-create-cancel">Cancel</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</section>
+
+<script>
+    if (typeof window.initPresetGallerySelection === 'function') {
+        window.initPresetGallerySelection();
+    }
+</script>
+{% endblock %}

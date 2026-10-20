@@ -835,6 +835,193 @@ class ProfileAvatarCustomizationTests(TestCase):
         )
         self.assertEqual(response.status_code, 403)
 
+    def test_upload_valid_jff_file_with_jpeg_content(self):
+        """Verify that uploading a .jff file with genuine JPEG content is accepted and saved."""
+        self.client.force_login(self.user1)
+        buf = io.BytesIO()
+        img = Image.new('RGB', (80, 80), (79, 70, 229))
+        img.save(buf, format='JPEG')
+        buf.seek(0)
+        valid_jff = SimpleUploadedFile('weekend.jff', buf.read(), content_type='image/jpeg')
+
+        response = self.client.post(
+            reverse('update_profile_avatar'),
+            {'avatar_image': valid_jff, 'action': 'upload'},
+            HTTP_X_REQUESTED_WITH='XMLHttpRequest'
+        )
+        self.assertEqual(response.status_code, 200)
+        data = response.json()
+        self.assertTrue(data.get('success'))
+        self.assertIn('/media/profile_pictures/user_', data.get('avatar_url'))
+
+        # Check DB and file normalization
+        profile = UserProfile.objects.get(user=self.user1)
+        self.assertTrue(bool(profile.avatar_image))
+        self.assertEqual(profile.avatar_preset, '')
+        self.assertTrue(profile.avatar_image.name.endswith('.jpg'))
+        self.assertTrue(os.path.exists(profile.avatar_image.path))
+
+        # Cleanup media
+        if profile.avatar_image and os.path.exists(profile.avatar_image.path):
+            try:
+                os.remove(profile.avatar_image.path)
+            except OSError:
+                pass
+
+    def test_reject_invalid_jff_file_with_non_image_content(self):
+        """A .jff extension is not a supported format. Reject it unless verified as genuine image content."""
+        self.client.force_login(self.user1)
+        fake_jff = SimpleUploadedFile('weekend.jff', b'This is plain text and not a JPEG', content_type='application/octet-stream')
+        response = self.client.post(
+            reverse('update_profile_avatar'),
+            {'avatar_image': fake_jff, 'action': 'upload'},
+            HTTP_X_REQUESTED_WITH='XMLHttpRequest'
+        )
+        self.assertEqual(response.status_code, 400)
+        data = response.json()
+        self.assertIn('Invalid image', data.get('error', ''))
+
+        # DB remains unchanged
+        profile = UserProfile.objects.filter(user=self.user1).first()
+        if profile:
+            self.assertFalse(bool(profile.avatar_image))
+
+    def test_reject_renamed_fake_image_file(self):
+        """Never accept a file solely because its extension was renamed to .jpg or .png."""
+        self.client.force_login(self.user1)
+        fake_jpg = SimpleUploadedFile('weekend.jpg', b'<script>alert("hack")</script>', content_type='image/jpeg')
+        response = self.client.post(
+            reverse('update_profile_avatar'),
+            {'avatar_image': fake_jpg, 'action': 'upload'},
+            HTTP_X_REQUESTED_WITH='XMLHttpRequest'
+        )
+        self.assertEqual(response.status_code, 400)
+        data = response.json()
+        self.assertIn('Invalid image', data.get('error', ''))
+
+    def test_reject_unsupported_format_even_if_renamed(self):
+        """Reject genuinely unsupported image formats like BMP even if renamed to .jff or .jpg."""
+        self.client.force_login(self.user1)
+        buf = io.BytesIO()
+        img = Image.new('RGB', (60, 60), (255, 0, 0))
+        img.save(buf, format='BMP')
+        buf.seek(0)
+        bmp_as_jff = SimpleUploadedFile('photo.jff', buf.read(), content_type='image/x-ms-bmp')
+        response = self.client.post(
+            reverse('update_profile_avatar'),
+            {'avatar_image': bmp_as_jff, 'action': 'upload'},
+            HTTP_X_REQUESTED_WITH='XMLHttpRequest'
+        )
+        self.assertEqual(response.status_code, 400)
+        data = response.json()
+        self.assertIn('Unsupported image format', data.get('error', ''))
+
+    def test_failed_upload_preserves_existing_avatar(self):
+        """Prevent invalid uploads from replacing an existing valid avatar."""
+        self.client.force_login(self.user1)
+        profile, _ = UserProfile.objects.get_or_create(user=self.user1)
+        profile.avatar_preset = 'avatar-2'
+        profile.save()
+
+        # Attempt invalid upload
+        fake_file = SimpleUploadedFile('bad.jff', b'corrupt', content_type='application/octet-stream')
+        response = self.client.post(
+            reverse('update_profile_avatar'),
+            {'avatar_image': fake_file},
+            HTTP_X_REQUESTED_WITH='XMLHttpRequest'
+        )
+        self.assertEqual(response.status_code, 400)
+
+        profile.refresh_from_db()
+        self.assertEqual(profile.avatar_preset, 'avatar-2')
+        self.assertFalse(bool(profile.avatar_image))
+        self.assertEqual(profile.get_avatar_url(), '/static/music/images/avatars/avatar-2.svg')
+
+
+class HomepageRecentlyPlayedVisibilityTests(TestCase):
+    """
+    Test suite for homepage Recently Played section visibility:
+    - Hidden when user is unauthenticated
+    - Hidden when authenticated user has empty history (no gap, heading, or empty-state message)
+    - Displayed when authenticated user has 1+ listening history records
+    - Strict user data isolation: new users never see another user's history
+    """
+
+    def setUp(self):
+        self.client = Client()
+        self.user1 = User.objects.create_user(
+            username='history_user1',
+            email='history1@example.com',
+            password='TestPassword123!'
+        )
+        self.user2 = User.objects.create_user(
+            username='history_user2',
+            email='history2@example.com',
+            password='TestPassword123!'
+        )
+        self.artist = Artist.objects.create(name='Star Artist')
+        self.album = Album.objects.create(title='Star Album', artist=self.artist)
+        self.song = Song.objects.create(title='Star Song', artist=self.artist, album=self.album)
+
+    def test_unauthenticated_guest_does_not_see_recently_played_section(self):
+        """Guest users should not see the Recently Played section or heading on the homepage."""
+        response = self.client.get(reverse('home'))
+        self.assertEqual(response.status_code, 200)
+        content = response.content.decode('utf-8')
+        self.assertNotIn('id="recently-played"', content)
+        self.assertNotIn('class="recently-played-section"', content)
+        self.assertNotIn('No listening history yet', content)
+
+    def test_authenticated_user_with_empty_history_does_not_see_recently_played_section(self):
+        """When an authenticated user has zero listening history, hide the entire section."""
+        self.client.force_login(self.user1)
+        response = self.client.get(reverse('home'))
+        self.assertEqual(response.status_code, 200)
+        content = response.content.decode('utf-8')
+        self.assertNotIn('id="recently-played"', content)
+        self.assertNotIn('class="recently-played-section"', content)
+        self.assertNotIn('Pick up where you left off.', content)
+        self.assertNotIn('No listening history yet', content)
+        self.assertNotIn('recentlyPlayedGrid', content)
+
+    def test_authenticated_user_with_listening_history_sees_recently_played_section(self):
+        """When an authenticated user has 1+ history records, display the section normally."""
+        ListeningHistory.objects.create(user=self.user1, song=self.song)
+        self.client.force_login(self.user1)
+        response = self.client.get(reverse('home'))
+        self.assertEqual(response.status_code, 200)
+        content = response.content.decode('utf-8')
+        self.assertIn('id="recently-played"', content)
+        self.assertIn('Recently Played', content)
+        self.assertIn('Pick up where you left off.', content)
+        self.assertIn('Star Song', content)
+        self.assertIn('Star Artist', content)
+        self.assertNotIn('No listening history yet', content)
+
+    def test_user_isolation_for_homepage_recently_played(self):
+        """Ensure history is scoped to the current user; User 2 must not see User 1's history."""
+        # User 1 listens to music
+        ListeningHistory.objects.create(user=self.user1, song=self.song)
+
+        # User 2 logs in with zero history
+        self.client.force_login(self.user2)
+        response2 = self.client.get(reverse('home'))
+        self.assertEqual(response2.status_code, 200)
+        content2 = response2.content.decode('utf-8')
+        # Section should be completely hidden for User 2
+        self.assertNotIn('id="recently-played"', content2)
+        self.assertNotIn('Star Song', content2)
+        self.assertNotIn('No listening history yet', content2)
+
+        # User 1 logs in and sees their history
+        self.client.force_login(self.user1)
+        response1 = self.client.get(reverse('home'))
+        self.assertEqual(response1.status_code, 200)
+        content1 = response1.content.decode('utf-8')
+        self.assertIn('id="recently-played"', content1)
+        self.assertIn('Star Song', content1)
+
+
 
 
 

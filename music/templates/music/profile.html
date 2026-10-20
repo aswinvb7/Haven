@@ -71,7 +71,7 @@
                     {% csrf_token %}
                     <input type="hidden" name="avatar_preset" id="selectedAvatarPreset" value="{{ current_preset }}">
                     <input type="hidden" name="action" id="avatarActionInput" value="">
-                    <input type="file" id="avatarFileInput" name="avatar_image" accept="image/jpeg,image/png,image/webp" style="display: none;" aria-label="Upload profile picture file">
+                    <input type="file" id="avatarFileInput" name="avatar_image" accept="image/jpeg,image/png,image/webp,.jpg,.jpeg,.png,.webp,.jff,.jfif" style="display: none;" aria-label="Upload profile picture file">
 
                     <!-- Actions Toolbar -->
                     <div class="avatar-actions-bar">

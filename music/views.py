@@ -1412,7 +1412,8 @@ def update_profile_avatar(request):
 
         # File extension check
         ext = os.path.splitext(uploaded_file.name)[1].lower()
-        if ext not in {'.jpg', '.jpeg', '.png', '.webp'}:
+        ALLOWED_EXTENSIONS = {'.jpg', '.jpeg', '.png', '.webp', '.jff', '.jfif'}
+        if ext not in ALLOWED_EXTENSIONS:
             err_msg = 'Unsupported file format. Please upload a JPEG, PNG, or WebP image.'
             if is_ajax:
                 return JsonResponse({'error': err_msg}, status=400)

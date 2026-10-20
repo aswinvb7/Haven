@@ -258,7 +258,7 @@ function initProfileAvatarCustomization() {
 
       const validTypes = ['image/jpeg', 'image/png', 'image/webp'];
       const ext = file.name.split('.').pop().toLowerCase();
-      const validExts = ['jpg', 'jpeg', 'png', 'webp'];
+      const validExts = ['jpg', 'jpeg', 'png', 'webp', 'jff', 'jfif'];
       if (!validTypes.includes(file.type) && !validExts.includes(ext)) {
         showAlert('error', 'Unsupported file format. Please upload a JPEG, PNG, or WebP image.');
         fileInput.value = '';
